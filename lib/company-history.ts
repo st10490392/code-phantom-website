@@ -8,33 +8,73 @@ export const originStory = {
   ],
 };
 
+/**
+ * Archival details from the original Antagonistic Trading Co. brand.
+ * "2024" marks the origin of the Antagonistic venture and brand — not a
+ * legal incorporation date for CodePhantom Technologies. Antagonistic was
+ * an independent, informal trading venture, never formally incorporated,
+ * so this is presented as historical brand context, not a corporate
+ * founding record.
+ */
+export const antagonisticBrand = {
+  estd: "2024",
+  tagline: "The Antidote to Conventional Wisdom",
+  note: "Antagonistic Trading Co. was an independent trading venture rather than a formally incorporated company. 2024 marks the origin of the Antagonistic brand and its trading work — not a legal founding date for CodePhantom Technologies.",
+} as const;
+
 export const timeline = [
   {
+    year: "2024",
     label: "Antagonistic Trading Co.",
     detail:
-      "An independent trading venture built around systematic, technology-driven approaches to financial markets.",
+      "The original trading-focused venture — an independent, informal effort built around systematic, technology-driven approaches to financial markets.",
   },
   {
-    label: "Trading System Development",
+    year: "2025",
+    label: "Market Research & Strategy Development",
     detail:
-      "Proprietary trading systems and tooling were developed, laying the technical groundwork for everything that followed.",
+      "Continued market analysis, strategy development and documentation across multiple markets, building the research foundation behind later trading-system work.",
   },
   {
-    label: "Software + Automation",
+    year: "2026",
+    label: "From Strategy to Software",
     detail:
-      "The work expanded beyond trading into software development, automation and early cybersecurity study.",
+      "Trading-system concepts increasingly translated into formal software rules through the development of Code Phantom EA — moving from manual strategy toward tested, automatable logic.",
   },
   {
+    year: "2026",
     label: "CodePhantom Technologies",
     detail:
-      "The venture evolved into a broader technology brand: CodePhantom Technologies — Engineering Intelligent Systems.",
+      "The original trading vision expands into a broader technology company centered on software engineering, cybersecurity, intelligent automation and technology research.",
   },
   {
+    year: "Ongoing",
     label: "Phantom Traders",
     detail:
-      "The original trading ambitions continue today through Phantom Traders, CodePhantom's quantitative research and trading technology division.",
+      "The original market-focused work continues today as CodePhantom's quantitative and trading-technology division.",
   },
 ] as const;
+
+/**
+ * Curated historical brand/trading/development imagery for the About page's
+ * origin section (Antagonistic-era brand material, market-research
+ * archives, Code Phantom EA development screenshots, Phantom Traders
+ * identity). None have been supplied yet — DO NOT seed this with
+ * placeholder, stock or fabricated imagery. Historical chart/market
+ * screenshots in particular must only ever be captioned as development or
+ * research artifacts, never as evidence of profitability, returns or
+ * trading performance. The About page renders no historical gallery until
+ * real, explicitly curated assets are added here.
+ */
+export type HistoricalAsset = {
+  id: string;
+  src: string;
+  alt: string;
+  caption: string;
+  context: string;
+};
+
+export const historicalAssets: HistoricalAsset[] = [];
 
 export const mission =
   "Engineer intelligent systems that create practical value through software, security, automation and technological research.";

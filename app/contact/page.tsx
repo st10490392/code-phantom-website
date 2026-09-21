@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
-import { socials } from "@/lib/site-config";
+import { socials, founderSocials } from "@/lib/site-config";
 import {
   GitHubIcon,
   LinkedInIcon,
@@ -53,6 +53,27 @@ const channelDefs = [
     description: "Send CodePhantom an email.",
     icon: MailIcon,
     href: socials.email ? `mailto:${socials.email}` : null,
+  },
+] as const;
+
+const founderChannelDefs = [
+  {
+    key: "founder-github",
+    label: "GitHub",
+    icon: GitHubIcon,
+    href: founderSocials.github,
+  },
+  {
+    key: "founder-linkedin",
+    label: "LinkedIn",
+    icon: LinkedInIcon,
+    href: founderSocials.linkedin,
+  },
+  {
+    key: "founder-instagram",
+    label: "Instagram",
+    icon: InstagramIcon,
+    href: founderSocials.instagram,
   },
 ] as const;
 
@@ -114,6 +135,33 @@ export default function ContactPage() {
               additional social profiles — will be added here as they are
               confirmed. CodePhantom does not publish placeholder or
               unconfirmed contact details.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={active.length * 80 + 160}>
+          <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-metallic-silver/10 bg-surface/30 p-8">
+            <h2 className="text-center font-mono text-xs uppercase tracking-[0.25em] text-cyber-blue">
+              Connect with the Founder
+            </h2>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+              {founderChannelDefs.map(({ key, label, icon: Icon, href }) => (
+                <a
+                  key={key}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-full border border-metallic-silver/15 px-4 py-2 text-sm text-metallic-silver transition-colors hover:border-cyber-blue/50 hover:text-ghost-white"
+                >
+                  <Icon className="h-4 w-4" />
+                  {label}
+                </a>
+              ))}
+            </div>
+            <p className="mt-6 text-center text-xs leading-relaxed text-muted-text">
+              These are Ripfumelo Ngobeni&rsquo;s personal founder channels —
+              Instagram in particular is his personal/professional account,
+              not an official CodePhantom Technologies channel.
             </p>
           </div>
         </Reveal>

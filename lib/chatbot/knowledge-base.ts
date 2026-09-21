@@ -49,7 +49,46 @@ export const knowledgeBase: KnowledgeEntry[] = [
     ],
     keywords: ["founder", "founded", "owns", "started", "who"],
     answer:
-      "CodePhantom Technologies was founded by Ripfumelo Ngobeni, an early-career software developer currently completing a Diploma in Software Development (final academic year expected in 2027). You can read more on the Founder page.",
+      "CodePhantom Technologies was founded by Ripfumelo Ngobeni, an early-career software developer based in South Africa, currently completing a Diploma in Software Development (final academic year expected in 2027). You can read his full story on the Founder page.",
+  },
+  {
+    id: "founder-background",
+    questions: [
+      "how did the founder get into tech",
+      "what is the founder's background",
+      "founder's story",
+      "how did ripfumelo start coding",
+      "why did the founder start codephantom",
+    ],
+    keywords: ["founder", "background", "story", "journey", "trading", "markets", "coding"],
+    answer:
+      "Ripfumelo's path into technology actually started through financial markets, not the other way around. Trading first caught his interest, and curiosity about how automated trading systems (Expert Advisors) actually work pulled him into programming. His interest later expanded into Linux and cybersecurity. As his software skills grew, he realized the technology behind his original trading venture, Antagonistic Trading Co., could become bigger than trading alone — which led to CodePhantom Technologies. The full story is on the Founder page.",
+  },
+  {
+    id: "founder-socials",
+    questions: [
+      "what is the founder's github",
+      "founder's linkedin",
+      "founder's instagram",
+      "how do i follow the founder",
+      "connect with the founder",
+    ],
+    keywords: ["founder", "github", "linkedin", "instagram", "social", "follow", "connect"],
+    answer:
+      "Ripfumelo's GitHub is github.com/st10490392 and his LinkedIn is linkedin.com/in/ripfumelo-ngobeni-753545389. His Instagram (@gingercodephantom) is his personal/professional account, not an official CodePhantom Technologies channel. All three are linked from the Founder page.",
+  },
+  {
+    id: "whatsapp-phone",
+    questions: [
+      "what is your whatsapp number",
+      "can i whatsapp you",
+      "what is your phone number",
+      "do you have whatsapp",
+      "can i call you",
+    ],
+    keywords: ["whatsapp", "phone", "number", "call"],
+    answer:
+      "CodePhantom doesn't publish a personal phone or WhatsApp number. A dedicated CodePhantom WhatsApp Business line is planned for the future. For now, the best way to reach CodePhantom is through GitHub or the Contact page.",
   },
   {
     id: "technologies-used",
@@ -70,9 +109,9 @@ export const knowledgeBase: KnowledgeEntry[] = [
       "tell me about phantom traders",
       "does codephantom trade",
     ],
-    keywords: ["phantom", "traders", "trading", "markets"],
+    keywords: ["phantom", "traders", "trading", "markets", "antagonistic"],
     answer:
-      "Phantom Traders is CodePhantom's quantitative and trading-technology division — \"Systematic Markets. Engineered Execution.\" It focuses on strategy development, automated trading systems, research & backtesting, risk management and quantitative tooling. It does not currently offer managed accounts, copy trading, financial advice, paid signals or investment management.",
+      "Phantom Traders is CodePhantom's quantitative and trading-technology division — \"Systematic Markets. Engineered Execution.\" It's the direct continuation of Antagonistic Trading Co., CodePhantom's original trading venture, now focused on strategy development, automated trading systems, research & backtesting, risk management and quantitative tooling. It does not currently offer managed accounts, copy trading, financial advice, paid signals or investment management.",
   },
   {
     id: "code-phantom-ea",
@@ -84,7 +123,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
     ],
     keywords: ["ea", "expert advisor", "code phantom ea"],
     answer:
-      "Code Phantom EA is Phantom Traders' automated trading engine project, currently in Research / Development. No performance results, win rates, ROI, funded capital or broker/prop-firm partnerships are published, because none of that exists yet in a verified form.",
+      "Code Phantom EA is Phantom Traders' automated trading engine project, currently in Research / Development. It represents an important transition in CodePhantom's history — turning manual, systematic trading concepts from the Antagonistic era into formal software rules, testing and automation research. No performance results, win rates, ROI, funded capital or broker/prop-firm partnerships are published, because none of that exists yet in a verified form.",
   },
   {
     id: "codephantom-software",
@@ -141,9 +180,9 @@ export const knowledgeBase: KnowledgeEntry[] = [
       "where did codephantom come from",
       "origin story",
     ],
-    keywords: ["antagonistic", "history", "origin", "story", "began"],
+    keywords: ["antagonistic", "history", "origin", "story", "began", "2024"],
     answer:
-      "CodePhantom began with Antagonistic Trading Co., an independent trading venture. As that work expanded into software development, automation and cybersecurity, it evolved into CodePhantom Technologies — while the original trading ambitions continue today through Phantom Traders.",
+      "CodePhantom began with Antagonistic Trading Co. (est. 2024), an independent, informal trading venture — never formally incorporated. 2025 continued that work through market research and strategy development, and 2026 saw trading concepts translate into software through Code Phantom EA. That work expanded into CodePhantom Technologies — a broader technology company — while the original trading ambitions continue today through Phantom Traders. See the About page for the full timeline.",
   },
   {
     id: "projects",
@@ -172,7 +211,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
     ],
     keywords: ["location", "based", "office", "address", "where"],
     answer:
-      "CodePhantom Technologies has not published a physical office or address. It's an early-stage technology venture built and operated independently.",
+      "CodePhantom Technologies has not published a physical office or address. The founder, Ripfumelo Ngobeni, is based in South Africa, and CodePhantom is an early-stage technology venture built and operated independently.",
   },
 ];
 

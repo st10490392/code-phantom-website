@@ -41,15 +41,15 @@ export const projects: Project[] = [
     summary:
       "An automated trading system under active research and development within Phantom Traders.",
     description:
-      "Code Phantom EA is CodePhantom's flagship automated trading engine project — an expert advisor engineered to translate systematic trading logic into disciplined, rules-based execution. It is being developed as part of Phantom Traders' broader research into strategy development, backtesting and automated execution technology.",
+      "Code Phantom EA is CodePhantom's flagship automated trading engine project — an expert advisor engineered to translate systematic trading logic into disciplined, rules-based execution. It marks the transition from Antagonistic Trading Co.'s manual, market-research-driven strategy work into formal software rules, testing and automation, and is being developed as part of Phantom Traders' broader research into strategy development, backtesting and automated execution technology.",
     technologies: ["MQL5", "Python", "Backtesting Infrastructure"],
     category: "Quantitative Technology",
     status: "Research / Development",
     githubUrl: "https://github.com/st10490392",
     featured: true,
-    date: "2025-01-01",
+    date: "2026-01-01",
     research:
-      "Code Phantom EA is in active research and development. No performance results, win rates or return figures are published until a complete, verified track record exists.",
+      "Code Phantom EA is in active research and development. No performance results, win rates or return figures are published until a complete, verified track record exists. No exact project start date is claimed beyond its place in CodePhantom's broader company timeline.",
   },
   {
     title: "C# Cybersecurity Bot",
