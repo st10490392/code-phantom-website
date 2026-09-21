@@ -9,7 +9,7 @@ export function Timeline() {
           <Reveal delay={i * 80}>
             <span className="absolute -left-[2.35rem] top-1 flex h-4 w-4 items-center justify-center rounded-full bg-phantom-gradient shadow-glow" />
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">
-              Step {i + 1}
+              {step.year}
             </p>
             <h3 className="mt-2 font-display text-xl font-semibold text-ghost-white">
               {step.label}

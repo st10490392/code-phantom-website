@@ -3,8 +3,8 @@ import { Section, SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
 import { founder } from "@/lib/founder";
-import { ArrowRightIcon, GitHubIcon } from "@/components/icons";
-import { socials } from "@/lib/site-config";
+import { ArrowRightIcon, GitHubIcon, LinkedInIcon, InstagramIcon } from "@/components/icons";
+import { founderSocials } from "@/lib/site-config";
 import { NetworkBackground } from "@/components/network-background";
 
 export const metadata: Metadata = {
@@ -35,6 +35,9 @@ export default function FounderPage() {
                 {founder.name}
               </h1>
               <p className="mt-3 text-lg text-metallic-silver">{founder.role}</p>
+              <p className="mt-1 text-sm text-muted-text">
+                {founder.location} · {founder.careerStage}
+              </p>
             </Reveal>
           </div>
         </div>
@@ -100,17 +103,44 @@ export default function FounderPage() {
                 </ul>
               </div>
 
-              {socials.github && (
-                <Button
-                  href={socials.github}
-                  external
-                  variant="secondary"
-                  className="w-full"
-                  icon={<GitHubIcon className="h-4 w-4" />}
-                >
-                  View GitHub
-                </Button>
-              )}
+              <div className="rounded-2xl border border-metallic-silver/10 bg-surface/40 p-6">
+                <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">
+                  Connect
+                </h3>
+                <div className="mt-4 space-y-3">
+                  <a
+                    href={founderSocials.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-sm text-metallic-silver transition-colors hover:text-ghost-white"
+                  >
+                    <GitHubIcon className="h-4 w-4 flex-shrink-0" />
+                    GitHub
+                  </a>
+                  <a
+                    href={founderSocials.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-sm text-metallic-silver transition-colors hover:text-ghost-white"
+                  >
+                    <LinkedInIcon className="h-4 w-4 flex-shrink-0" />
+                    LinkedIn
+                  </a>
+                  <a
+                    href={founderSocials.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-sm text-metallic-silver transition-colors hover:text-ghost-white"
+                  >
+                    <InstagramIcon className="h-4 w-4 flex-shrink-0" />
+                    Instagram
+                  </a>
+                </div>
+                <p className="mt-4 text-xs leading-relaxed text-muted-text">
+                  Instagram is Ripfumelo&rsquo;s personal/professional
+                  account, not an official CodePhantom Technologies channel.
+                </p>
+              </div>
             </div>
           </Reveal>
         </div>
