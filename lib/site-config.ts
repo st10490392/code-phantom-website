@@ -150,6 +150,7 @@ export const primaryNav = [
   { label: "About", href: "/about" },
   { label: "Capabilities", href: "/capabilities" },
   { label: "Divisions", href: "/divisions" },
+  { label: "Products", href: "/products" },
   { label: "Projects", href: "/projects" },
   { label: "Insights", href: "/insights" },
   { label: "Founder", href: "/founder" },
