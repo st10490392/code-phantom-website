@@ -50,10 +50,14 @@ test("no APK is offered unless a complete, valid release is configured", () => {
   assert.equal(androidRelease({ ...ok, channel: "nightly" }), null);
 });
 
-test("public identity: GingerCodePhantom founded CodePhantom Technologies; no legal entity claimed yet", () => {
-  assert.equal(company.founder.publicName, "GingerCodePhantom");
-  assert.equal(founder.name, "GingerCodePhantom");
+test("founder identity: GingerCodePhantom alias + Ripfumelo Ngobeni; no legal entity claimed yet", () => {
+  assert.equal(company.founder.alias, "GingerCodePhantom");
+  assert.equal(company.founder.personName, "Ripfumelo Ngobeni");
+  assert.equal(founder.alias, "GingerCodePhantom");
+  assert.equal(founder.name, "Ripfumelo Ngobeni");
+  assert.equal(founder.displayName, "GingerCodePhantom (Ripfumelo Ngobeni)");
   assert.equal(founder.role, "Founder · CodePhantom Technologies");
+  assert.match(legalEntityNotice(), /GingerCodePhantom \(Ripfumelo Ngobeni\)/);
   assert.equal(isRegisteredCompany(), false);
   assert.equal(contractingPartyName(), "CodePhantom Technologies");
   assert.doesNotMatch(legalEntityNotice(), /Pty|Ltd/);

@@ -28,6 +28,7 @@ test("words that merely start with a greeting are not greetings", () => {
 const expected: Record<string, string> = {
   "Who founded CodePhantom?": "who-founded",
   "who is gingercodephantom": "founder-background",
+  "who is Ripfumelo Ngobeni": "founder-background",
   "What is CPT Scanner?": "cpt-scanner",
   "What is the CodePhantom Android app?": "android-app",
   "Tell me about Code Phantom EA": "code-phantom-ea",
@@ -76,13 +77,22 @@ test("unknown questions fall back safely", () => {
   assert.equal(matchQuestion("   ").answer, fallbackAnswer);
 });
 
-test("answers stay grounded: no prices, no performance claims, no production-ready Synthetics, no legal name", () => {
+test("answers stay grounded: no prices, no performance claims, no production-ready Synthetics", () => {
   const all = knowledgeBase.map((e) => e.answer).join("\n");
   assert.doesNotMatch(all, /R\s?\d|\$\s?\d|\d+\s?%|ZAR\s?\d|USD\s?\d/, "no prices or percentages");
-  assert.doesNotMatch(all, /Ripfumelo|Ngobeni/);
   assert.doesNotMatch(all, /Synthetics[^.]*(is|are) (production-ready|stable|live)/i);
   assert.doesNotMatch(all, /\b(proven|guaranteed) (profit|returns|results)/i);
   assert.doesNotMatch(all, /\(Pty\) Ltd/);
   for (const e of knowledgeBase) assert.ok(e.answer.length > 20, e.id);
   assert.equal(new Set(knowledgeBase.map((e) => e.id)).size, knowledgeBase.length, "unique ids");
 });
+
+test("founder answers associate both identities with CodePhantom Technologies", () => {
+  for (const q of ["Who founded CodePhantom?", "who is gingercodephantom", "who is Ripfumelo Ngobeni"]) {
+    const answer = matchQuestion(q).answer;
+    assert.match(answer, /GingerCodePhantom/, q);
+    assert.match(answer, /Ripfumelo Ngobeni/, q);
+    assert.match(answer, /CodePhantom Technologies/, q);
+  }
+});
+

@@ -34,12 +34,17 @@ at the host level.
 ## Company and founder identity
 
 `lib/company.ts` is the single source for the brand (CodePhantom
-Technologies), the public founder identity (GingerCodePhantom) and the
-future legal entity. `legal.legalName` and `legal.registrationNumber` stay
+Technologies), the founder's two identities - `alias` GingerCodePhantom
+(public creator brand, shown first) and `personName` Ripfumelo Ngobeni
+(real name, shown beneath it) - and the future legal entity. Structured
+data uses the real name as the Person `name` with GingerCodePhantom as
+`alternateName`; titles read "GingerCodePhantom (Ripfumelo Ngobeni) —
+Founder of CodePhantom Technologies", so searches for either name
+associate the founder with the company. `legal.legalName` and `legal.registrationNumber` stay
 `null` until CIPC registration is complete; filling them in updates the
 footer, Terms, Privacy and Organization structured data at once. Never
-write "(Pty) Ltd" anywhere before then. The founder's legal name is not
-stored or rendered by the site.
+write "(Pty) Ltd" anywhere before then. No founder details beyond those
+already on the Founder page belong in the site.
 
 ## WhatsApp - CodePhantom Traders
 

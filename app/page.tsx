@@ -223,8 +223,9 @@ export default function HomePage() {
               Founder
             </p>
             <h2 className="font-display text-3xl font-semibold text-ghost-white tracking-tight">
-              {founder.name}
+              {founder.alias}
             </h2>
+            <p className="mt-1 text-base text-ghost-white/90">{founder.name}</p>
             <p className="mt-2 text-sm text-cyber-blue">{founder.role}</p>
             <div className="mt-6">
               <Button href="/founder" variant="ghost" icon={<ArrowRightIcon className="h-4 w-4" />}>

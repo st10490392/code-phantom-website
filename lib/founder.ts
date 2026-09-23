@@ -1,4 +1,4 @@
-import { company } from "@/lib/company";
+import { company, founderDisplayName } from "@/lib/company";
 
 /**
  * Founder profile content.
@@ -10,14 +10,16 @@ import { company } from "@/lib/company";
  * language) — see CP-WEB-001-R1.
  */
 export const founder = {
-  // Public founder identity (see lib/company.ts). The legal name is not
-  // used or rendered by the website.
-  name: company.founder.publicName,
+  // Both identities, from lib/company.ts: the public alias leads, the real
+  // name is shown beneath it and used as the Person name in structured data.
+  alias: company.founder.alias,
+  name: company.founder.personName,
+  displayName: founderDisplayName,
   role: `${company.founder.title} · ${company.brand.name}`,
   location: "South Africa",
   careerStage: "Early-career software developer",
   summary:
-    "GingerCodePhantom founded CodePhantom Technologies and is based in South Africa — an early-career software developer building both a technology company and the engineering skills behind it, in parallel.",
+    "GingerCodePhantom (Ripfumelo Ngobeni) founded CodePhantom Technologies and is based in South Africa — an early-career software developer building both a technology company and the engineering skills behind it, in parallel.",
   bio: [
     "GingerCodePhantom's path into technology began through financial markets, not the other way around. He first became interested in trading after coming across trading content online — including material from DJ Coach — and later learned more directly from a local trader.",
     "Over time, his interest shifted beyond simply placing trades. Seeing automated trading systems and Expert Advisors online made him want to understand how those systems were actually built — and, eventually, to build one himself. That curiosity is one of the reasons he moved deeper into programming and software development.",

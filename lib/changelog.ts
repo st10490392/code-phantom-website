@@ -19,7 +19,7 @@ export const changelog: ChangelogEntry[] = [
     visibility: "Public",
     items: [
       "Added Products, Download, Changelog, Status, Support, Privacy and Terms pages.",
-      "Founder presented publicly as GingerCodePhantom.",
+      "Founder presented as GingerCodePhantom (Ripfumelo Ngobeni) across the site and search metadata.",
       "Added the CodePhantom Traders WhatsApp group link (formerly TAT Market Direction).",
       "Phantom Assistant can answer questions about products, accounts, licences and support.",
     ],

@@ -74,6 +74,7 @@ export function FounderJsonLd() {
         "@type": "Person",
         "@id": entityIds.founder,
         name: founder.name,
+        alternateName: founder.alias,
         jobTitle: company.founder.title,
         worksFor: { "@id": entityIds.organization },
         url: `${siteConfig.url}/founder`,
@@ -85,7 +86,7 @@ export function FounderJsonLd() {
       {
         "@type": "ProfilePage",
         url: `${siteConfig.url}/founder`,
-        name: `${founder.name} — Founder of ${siteConfig.name}`,
+        name: `${founder.displayName} — Founder of ${siteConfig.name}`,
         mainEntity: { "@id": entityIds.founder },
         isPartOf: { "@id": entityIds.website },
       },
