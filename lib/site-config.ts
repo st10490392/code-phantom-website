@@ -82,6 +82,35 @@ export const founderSocials = {
 } as const;
 
 /**
+ * CodePhantom community channels (distinct from 1:1 contact channels).
+ *
+ * The WhatsApp community invite link is configured per deployment through
+ * NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL so it can be set or rotated without a
+ * code change. It is only accepted if it is a genuine WhatsApp invite link
+ * (https://chat.whatsapp.com/<code>); anything else - including unset -
+ * hides the community CTA entirely. Never put a personal number here.
+ */
+const WHATSAPP_INVITE = /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]{10,40}$/;
+const configuredCommunity = process.env.NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL?.trim();
+
+export const community = {
+  whatsapp:
+    configuredCommunity && WHATSAPP_INVITE.test(configuredCommunity)
+      ? configuredCommunity
+      : (null as string | null),
+} as const;
+
+/**
+ * Stable JSON-LD identifiers so search engines can connect the
+ * Organization, its founder (Person) and the WebSite as one entity graph.
+ */
+export const entityIds = {
+  organization: `${siteUrl}/#organization`,
+  founder: `${siteUrl}/founder#person`,
+  website: `${siteUrl}/#website`,
+} as const;
+
+/**
  * Primary site navigation. Kept flat and small per the brief:
  * "Primary navigation should remain clean."
  */
