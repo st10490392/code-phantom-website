@@ -11,6 +11,7 @@ import {
   ArrowRightIcon,
 } from "@/components/icons";
 import { NetworkBackground } from "@/components/network-background";
+import { CommunityCta } from "@/components/community-cta";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -165,6 +166,7 @@ export default function ContactPage() {
             </p>
           </div>
         </Reveal>
+        <CommunityCta className="mx-auto mt-10 max-w-2xl" />
       </Section>
     </>
   );

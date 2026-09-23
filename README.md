@@ -91,3 +91,10 @@ here once it's actually confirmed.
 it is never redrawn, regenerated or distorted. `public/mark.png` is a
 pixel-for-pixel crop of that same file's emblem (no redraw), used
 wherever the full lockup would be illegible (nav, favicon).
+
+## Operations
+
+See [`docs/OPERATIONS.md`](docs/OPERATIONS.md) for environment variables,
+SEO/structured data, the WhatsApp community link and the moderated
+testimonial pipeline.
+
