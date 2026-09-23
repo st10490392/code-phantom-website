@@ -3,8 +3,11 @@
  * and (future) legal registration details.
  *
  *   brand      - how the company is presented everywhere.
- *   founder    - the PUBLIC founder identity. The founder's legal name is
- *                intentionally not stored or rendered by this website.
+ *   founder    - the founder is presented with BOTH identities:
+ *                  alias:      GingerCodePhantom (public creator brand)
+ *                  personName: Ripfumelo Ngobeni (real name)
+ *                so searches for either associate him with the company.
+ *                No further personal details belong here.
  *   legal      - null until CIPC registration is complete. When it is,
  *                fill in `legalName` (e.g. "CodePhantom Technologies (Pty)
  *                Ltd") and `registrationNumber` here and every consumer
@@ -19,7 +22,8 @@ export const company = {
     country: "South Africa",
   },
   founder: {
-    publicName: "GingerCodePhantom",
+    alias: "GingerCodePhantom",
+    personName: "Ripfumelo Ngobeni",
     title: "Founder",
   },
   legal: {
@@ -43,8 +47,11 @@ export function legalEntityNotice(): string {
   if (isRegisteredCompany()) {
     return `${company.legal.legalName}, registered with ${company.legal.registrationAuthority} under registration number ${company.legal.registrationNumber}.`;
   }
-  return `${company.brand.name} is the trading brand of an early-stage venture founded by ${company.founder.publicName}. Company registration details will be published here once registration is complete.`;
+  return `${company.brand.name} is the trading brand of an early-stage venture founded by ${founderDisplayName}. Company registration details will be published here once registration is complete.`;
 }
 
-/** "GingerCodePhantom · Founder · CodePhantom Technologies" */
+/** "GingerCodePhantom (Ripfumelo Ngobeni)" - for running text and SEO. */
+export const founderDisplayName = `${company.founder.alias} (${company.founder.personName})`;
+
+/** "Founder · CodePhantom Technologies" */
 export const founderByline = `${company.founder.title} · ${company.brand.name}`;

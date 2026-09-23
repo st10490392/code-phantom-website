@@ -9,17 +9,19 @@ import { NetworkBackground } from "@/components/network-background";
 import { FounderJsonLd } from "@/components/structured-data";
 
 const founderDescription =
-  "GingerCodePhantom, founder of CodePhantom Technologies — an early-career software developer building software, security and trading technology.";
+  "GingerCodePhantom (Ripfumelo Ngobeni), founder of CodePhantom Technologies — an early-career software developer building software, security and trading technology.";
 
 export const metadata: Metadata = {
-  title: "GingerCodePhantom — Founder",
+  title: { absolute: "GingerCodePhantom (Ripfumelo Ngobeni) — Founder of CodePhantom Technologies" },
   description: founderDescription,
   alternates: { canonical: "/founder" },
   openGraph: {
     type: "profile",
     url: "/founder",
-    title: "GingerCodePhantom — Founder of CodePhantom Technologies",
+    title: "GingerCodePhantom (Ripfumelo Ngobeni) — Founder of CodePhantom Technologies",
     description: founderDescription,
+    firstName: "Ripfumelo",
+    lastName: "Ngobeni",
     username: "GingerCodePhantom",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "CodePhantom Technologies" }],
   },
@@ -45,8 +47,9 @@ export default function FounderPage() {
                 Founder
               </p>
               <h1 className="font-display text-4xl font-semibold text-ghost-white tracking-tight md:text-5xl">
-                {founder.name}
+                {founder.alias}
               </h1>
+              <p className="mt-2 text-xl text-ghost-white/90">{founder.name}</p>
               <p className="mt-3 text-lg text-metallic-silver">{founder.role}</p>
               <p className="mt-1 text-sm text-muted-text">
                 {founder.location} · {founder.careerStage}

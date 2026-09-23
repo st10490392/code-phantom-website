@@ -34,7 +34,9 @@ export const siteConfig = {
   locale: "en_US",
   themeColor: "#05070D",
   founder: {
-    name: company.founder.publicName,
+    // Real name as the author/creator; the alias is carried alongside it.
+    name: company.founder.personName,
+    alias: company.founder.alias,
     role: founderByline,
   },
 } as const;

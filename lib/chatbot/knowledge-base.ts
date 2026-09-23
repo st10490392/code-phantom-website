@@ -53,7 +53,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
     ],
     keywords: ["founder", "founded", "owns", "started", "who"],
     answer:
-      "CodePhantom Technologies was founded by GingerCodePhantom, an early-career software developer based in South Africa who is currently completing a Diploma in Software Development (final academic year expected in 2027). The full story is on the Founder page.",
+      "CodePhantom Technologies was founded by GingerCodePhantom (Ripfumelo Ngobeni) - GingerCodePhantom is his public creator name. He is an early-career software developer based in South Africa who is currently completing a Diploma in Software Development (final academic year expected in 2027). The full story is on the Founder page.",
   },
   {
     id: "founder-background",
@@ -63,11 +63,13 @@ export const knowledgeBase: KnowledgeEntry[] = [
       "founder's story",
       "how did gingercodephantom start coding",
       "who is gingercodephantom",
+      "who is ripfumelo ngobeni",
+      "is gingercodephantom ripfumelo ngobeni",
       "why did the founder start codephantom",
     ],
-    keywords: ["founder", "background", "story", "journey", "coding", "gingercodephantom", "ginger"],
+    keywords: ["founder", "background", "story", "journey", "coding", "gingercodephantom", "ginger", "ripfumelo", "ngobeni"],
     answer:
-      "GingerCodePhantom's path into technology actually started through financial markets, not the other way around. Trading first caught his interest, and curiosity about how automated trading systems (Expert Advisors) actually work pulled him into programming. His interest later expanded into Linux and cybersecurity. As his software skills grew, he realized the technology behind his original trading venture, Antagonistic Trading Co., could become bigger than trading alone — which led to CodePhantom Technologies. The full story is on the Founder page.",
+      "GingerCodePhantom is the public creator name of Ripfumelo Ngobeni, founder of CodePhantom Technologies. His path into technology actually started through financial markets, not the other way around. Trading first caught his interest, and curiosity about how automated trading systems (Expert Advisors) actually work pulled him into programming. His interest later expanded into Linux and cybersecurity. As his software skills grew, he realized the technology behind his original trading venture, Antagonistic Trading Co., could become bigger than trading alone — which led to CodePhantom Technologies. The full story is on the Founder page.",
   },
   {
     id: "founder-socials",
@@ -80,7 +82,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
     ],
     keywords: ["founder", "github", "linkedin", "instagram", "social", "follow", "connect"],
     answer:
-      "GingerCodePhantom's GitHub (github.com/st10490392), LinkedIn and Instagram (@gingercodephantom) are linked from the Founder page. They are the founder's own accounts, not official CodePhantom Technologies channels.",
+      "GingerCodePhantom's (Ripfumelo Ngobeni's) GitHub (github.com/st10490392), LinkedIn and Instagram (@gingercodephantom) are linked from the Founder page. They are the founder's own accounts, not official CodePhantom Technologies channels.",
   },
   {
     id: "whatsapp-phone",
@@ -218,7 +220,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
     ],
     keywords: ["location", "based", "office", "address", "where"],
     answer:
-      "CodePhantom Technologies has not published a physical office or address. The founder, GingerCodePhantom, is based in South Africa, and CodePhantom is an early-stage technology venture built and operated independently.",
+      "CodePhantom Technologies has not published a physical office or address. The founder, GingerCodePhantom (Ripfumelo Ngobeni), is based in South Africa, and CodePhantom is an early-stage technology venture built and operated independently.",
   },
   // ---------------------------------------------------------------------
   // Products
@@ -490,7 +492,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
     questions: ["is codephantom a registered company", "company registration", "pty ltd", "cipc"],
     keywords: ["registered", "registration", "pty", "ltd", "cipc", "incorporated"],
     answer:
-      "CodePhantom Technologies is an early-stage venture founded by GingerCodePhantom. Company registration details will be published on the website once registration is complete.",
+      "CodePhantom Technologies is an early-stage venture founded by GingerCodePhantom (Ripfumelo Ngobeni). Company registration details will be published on the website once registration is complete.",
   },
 ];
 

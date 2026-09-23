@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer";
 import { PhantomAssistant } from "@/components/phantom-assistant";
 import { OrganizationJsonLd } from "@/components/structured-data";
 import { siteConfig } from "@/lib/site-config";
+import { founderDisplayName } from "@/lib/company";
 
 const displayFont = Space_Grotesk({
   subsets: ["latin"],
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
-  creator: siteConfig.founder.name,
+  creator: founderDisplayName,
   publisher: siteConfig.name,
   keywords: [
     "CodePhantom",
@@ -46,8 +47,9 @@ export const metadata: Metadata = {
     "quantitative technology",
     "Phantom Traders",
     "GingerCodePhantom",
+    "Ripfumelo Ngobeni",
   ],
-  authors: [{ name: siteConfig.founder.name, url: `${siteConfig.url}/founder` }],
+  authors: [{ name: founderDisplayName, url: `${siteConfig.url}/founder` }],
   openGraph: {
     type: "website",
     url: siteConfig.url,
