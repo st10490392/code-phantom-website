@@ -6,7 +6,8 @@
 |---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | build | Confirmed production domain; drives canonical URLs, OpenGraph, sitemap, robots and JSON-LD ids. Never guessed - falls back to `http://localhost:3000`. |
 | `CODEPHANTOM_API_URL` | server only | CodePhantom Backend base URL (`https://…`). Read at build/revalidation (hourly) for **public, moderated** data only. Unset = feature off. |
-| `NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL` | build | WhatsApp **community** invite (`https://chat.whatsapp.com/<code>`). Anything else is ignored and the CTA stays hidden. |
+| `NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL` | build | CodePhantom Traders WhatsApp group invite (`https://chat.whatsapp.com/<code>`, WhatsApp's share query parameters allowed and stripped). Anything else is ignored and the CTA stays hidden. |
+| `NEXT_PUBLIC_ANDROID_RELEASE_*` | build | Version, URL, SHA-256, date, channel of a real signed Android release (see `lib/releases.ts`). All must be valid or `/download` offers nothing. |
 
 Staging: deploy preview builds (e.g. Vercel preview) with the staging
 backend URL and **no** `NEXT_PUBLIC_SITE_URL` (so previews never claim the
@@ -30,10 +31,22 @@ at the host level.
   they genuinely exist, then add them to `socials` (they flow into
   `sameAs` automatically).
 
-## WhatsApp community
+## Company and founder identity
 
-Set `NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL` and redeploy; the CTA appears on
-/contact. The backend has a matching `community.whatsapp` feature flag for
+`lib/company.ts` is the single source for the brand (CodePhantom
+Technologies), the public founder identity (GingerCodePhantom) and the
+future legal entity. `legal.legalName` and `legal.registrationNumber` stay
+`null` until CIPC registration is complete; filling them in updates the
+footer, Terms, Privacy and Organization structured data at once. Never
+write "(Pty) Ltd" anywhere before then. The founder's legal name is not
+stored or rendered by the site.
+
+## WhatsApp - CodePhantom Traders
+
+The existing group (formerly TAT Market Direction) is presented as
+"Join CodePhantom Traders" - "Market discussion, setups and CodePhantom
+updates." Set `NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL` and redeploy; the CTA
+appears on /contact, /support and /download. The backend has a matching `community.whatsapp` feature flag for
 the app. Community content must stay informational: no signals, no
 performance claims, no "guaranteed" language, and the not-financial-advice
 line stays in the CTA.
@@ -56,7 +69,27 @@ Never add testimonials by hand that did not go through this pipeline
 (`lib/reviews.ts` exists for moderated, consented entries only), never
 invent users, customers, results or win rates.
 
+## Products, download, status
+
+- `/products/*` content lives in `lib/products.ts`. Scanner pack
+  availability and prices come only from the backend's public plan catalog
+  (enabled + publicly visible plans); nothing else is ever shown as for sale.
+- `/download` offers an APK only when every `NEXT_PUBLIC_ANDROID_RELEASE_*`
+  value is set and valid - publish the checksum from the release workflow's
+  `SHA256SUMS.txt`.
+- `/status` shows a single live health check of the platform API when
+  `CODEPHANTOM_API_URL` is set; it never shows uptime percentages.
+- `/privacy` and `/terms` are marked Draft; have them reviewed before any
+  account-based product launches.
+
+## Phantom Assistant
+
+Answers come only from `lib/chatbot/knowledge-base.ts`; greetings, thanks
+and "who are you" are handled in `lib/chatbot/engine.ts`. `npm test` checks
+routing for every product/account topic and that answers contain no
+prices, performance claims, production-ready Synthetics or legal names.
+
 ## Deployment checklist
 
-`npm ci && npm run lint && npm run build` (CI runs the same). Confirm the
+`npm ci && npm run lint && npm test && npm run build` (CI runs the same). Confirm the
 production domain before setting `NEXT_PUBLIC_SITE_URL`.

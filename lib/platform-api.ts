@@ -97,3 +97,58 @@ export async function getPublishedTestimonials(limit = 6): Promise<PublishedTest
 export async function getPublicFeatures(): Promise<string[]> {
   return (await getPublic("/features")).filter((f): f is string => typeof f === "string");
 }
+
+export type PublicPlan = {
+  code: string;
+  name: string;
+  billingType: string;
+  billingInterval: string | null;
+  priceAmountMinor: number | null;
+  priceCurrency: string | null;
+  trialEligible: boolean;
+  trialDays: number | null;
+};
+
+/**
+ * Plans the backend reports as enabled AND publicly visible. Anything the
+ * owner has not explicitly published is absent, so the site can never
+ * advertise a disabled plan. Prices are the backend's, never invented here.
+ */
+export async function getPublicPlans(): Promise<PublicPlan[]> {
+  const out: PublicPlan[] = [];
+  for (const row of await getPublic("/plans")) {
+    const r = row as Record<string, unknown>;
+    if (typeof r.code !== "string" || typeof r.name !== "string") continue;
+    const amount = typeof r.price_amount_minor === "number" ? r.price_amount_minor : typeof r.price_amount_minor === "string" ? Number(r.price_amount_minor) : null;
+    out.push({
+      code: r.code,
+      name: r.name,
+      billingType: typeof r.billing_type === "string" ? r.billing_type : "CUSTOM",
+      billingInterval: typeof r.billing_interval === "string" ? r.billing_interval : null,
+      priceAmountMinor: amount !== null && Number.isFinite(amount) && amount >= 0 ? amount : null,
+      priceCurrency: typeof r.price_currency === "string" && /^[A-Z]{3}$/.test(r.price_currency) ? r.price_currency : null,
+      trialEligible: r.trial_eligible === true,
+      trialDays: typeof r.trial_days === "number" ? r.trial_days : null,
+    });
+  }
+  return out;
+}
+
+export type ApiHealth = { configured: boolean; reachable: boolean | null; checkedAt: string };
+
+/**
+ * One live liveness probe of the platform API (GET /health). Reports what
+ * was observed at `checkedAt` - never an uptime percentage or history.
+ */
+export async function getApiHealth(): Promise<ApiHealth> {
+  const checkedAt = new Date().toISOString();
+  const base = apiBase();
+  if (!base) return { configured: false, reachable: null, checkedAt };
+  try {
+    const res = await fetch(`${base}/health`, { next: { revalidate: 60 }, signal: AbortSignal.timeout(TIMEOUT_MS) });
+    return { configured: true, reachable: res.ok, checkedAt };
+  } catch {
+    return { configured: true, reachable: false, checkedAt };
+  }
+}
+

@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site-config";
 import { divisions } from "@/lib/divisions";
 import { projects } from "@/lib/projects";
+import { products } from "@/lib/products";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.url;
@@ -14,12 +15,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/insights",
     "/founder",
     "/contact",
+    "/products",
+    "/download",
+    "/changelog",
+    "/status",
+    "/support",
+    "/privacy",
+    "/terms",
   ];
 
   const divisionRoutes = divisions.map((d) => `/divisions/${d.slug}`);
   const projectRoutes = projects.map((p) => `/projects/${p.slug}`);
+  const productRoutes = products.map((p) => `/products/${p.slug}`);
 
-  return [...staticRoutes, ...divisionRoutes, ...projectRoutes].map((route) => ({
+  return [...staticRoutes, ...divisionRoutes, ...projectRoutes, ...productRoutes].map((route) => ({
     url: `${base}${route}`,
     lastModified: new Date(),
     changeFrequency: route === "" ? "weekly" : "monthly",
