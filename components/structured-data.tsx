@@ -1,5 +1,6 @@
 import { entityIds, founderSocials, siteConfig, socials } from "@/lib/site-config";
 import { founder } from "@/lib/founder";
+import { company, isRegisteredCompany } from "@/lib/company";
 
 function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
@@ -31,6 +32,17 @@ export function OrganizationJsonLd() {
         url: siteConfig.url,
         description: siteConfig.description,
         slogan: siteConfig.tagline,
+        // Only emitted once CIPC registration details exist in lib/company.ts.
+        ...(isRegisteredCompany()
+          ? {
+              legalName: company.legal.legalName,
+              identifier: {
+                "@type": "PropertyValue",
+                propertyID: company.legal.registrationAuthority,
+                value: company.legal.registrationNumber,
+              },
+            }
+          : {}),
         logo: { "@type": "ImageObject", url: `${siteConfig.url}/logo.png` },
         founder: { "@id": entityIds.founder },
         ...(sameAs.length > 0 ? { sameAs } : {}),
@@ -62,7 +74,7 @@ export function FounderJsonLd() {
         "@type": "Person",
         "@id": entityIds.founder,
         name: founder.name,
-        jobTitle: "Founder",
+        jobTitle: company.founder.title,
         worksFor: { "@id": entityIds.organization },
         url: `${siteConfig.url}/founder`,
         description: founder.summary,

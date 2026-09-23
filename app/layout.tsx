@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     "intelligent automation",
     "quantitative technology",
     "Phantom Traders",
-    "Ripfumelo Ngobeni",
+    "GingerCodePhantom",
   ],
   authors: [{ name: siteConfig.founder.name, url: `${siteConfig.url}/founder` }],
   openGraph: {

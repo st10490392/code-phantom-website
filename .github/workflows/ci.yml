@@ -20,6 +20,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npm test
       # No backend URL and no community link: the build must succeed with
       # every optional integration switched off.
       - run: npm run build

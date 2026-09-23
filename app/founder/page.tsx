@@ -9,19 +9,18 @@ import { NetworkBackground } from "@/components/network-background";
 import { FounderJsonLd } from "@/components/structured-data";
 
 const founderDescription =
-  "Ripfumelo Ngobeni, founder of CodePhantom Technologies — an early-career software developer building software, security and trading technology.";
+  "GingerCodePhantom, founder of CodePhantom Technologies — an early-career software developer building software, security and trading technology.";
 
 export const metadata: Metadata = {
-  title: "Ripfumelo Ngobeni — Founder",
+  title: "GingerCodePhantom — Founder",
   description: founderDescription,
   alternates: { canonical: "/founder" },
   openGraph: {
     type: "profile",
     url: "/founder",
-    title: "Ripfumelo Ngobeni — Founder of CodePhantom Technologies",
+    title: "GingerCodePhantom — Founder of CodePhantom Technologies",
     description: founderDescription,
-    firstName: "Ripfumelo",
-    lastName: "Ngobeni",
+    username: "GingerCodePhantom",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "CodePhantom Technologies" }],
   },
 };
@@ -37,7 +36,7 @@ export default function FounderPage() {
             <Reveal>
               <div className="flex h-32 w-32 items-center justify-center rounded-3xl bg-phantom-gradient/10 border border-phantom-purple/25 shadow-glow">
                 <span className="font-display text-4xl font-semibold text-gradient">
-                  RN
+                  GC
                 </span>
               </div>
             </Reveal>
@@ -151,7 +150,7 @@ export default function FounderPage() {
                   </a>
                 </div>
                 <p className="mt-4 text-xs leading-relaxed text-muted-text">
-                  Instagram is Ripfumelo&rsquo;s personal/professional
+                  Instagram is GingerCodePhantom&rsquo;s personal/professional
                   account, not an official CodePhantom Technologies channel.
                 </p>
               </div>
