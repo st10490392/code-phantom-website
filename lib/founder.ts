@@ -1,3 +1,5 @@
+import { company } from "@/lib/company";
+
 /**
  * Founder profile content.
  *
@@ -8,17 +10,19 @@
  * language) — see CP-WEB-001-R1.
  */
 export const founder = {
-  name: "Ripfumelo Ngobeni",
-  role: "Founder — CodePhantom Technologies",
+  // Public founder identity (see lib/company.ts). The legal name is not
+  // used or rendered by the website.
+  name: company.founder.publicName,
+  role: `${company.founder.title} · ${company.brand.name}`,
   location: "South Africa",
   careerStage: "Early-career software developer",
   summary:
-    "Ripfumelo Ngobeni is the founder of CodePhantom Technologies, based in South Africa — an early-career software developer building both a technology company and the engineering skills behind it, in parallel.",
+    "GingerCodePhantom founded CodePhantom Technologies and is based in South Africa — an early-career software developer building both a technology company and the engineering skills behind it, in parallel.",
   bio: [
-    "Ripfumelo's path into technology began through financial markets, not the other way around. He first became interested in trading after coming across trading content online — including material from DJ Coach — and later learned more directly from a local trader.",
+    "GingerCodePhantom's path into technology began through financial markets, not the other way around. He first became interested in trading after coming across trading content online — including material from DJ Coach — and later learned more directly from a local trader.",
     "Over time, his interest shifted beyond simply placing trades. Seeing automated trading systems and Expert Advisors online made him want to understand how those systems were actually built — and, eventually, to build one himself. That curiosity is one of the reasons he moved deeper into programming and software development.",
     "His interest later expanded into Linux and cybersecurity, with the television series Mr. Robot acting as an early spark of curiosity about that world — curiosity he has since been turning into independent, hands-on study.",
-    "As his software knowledge grew, he started to recognize that the technology behind his original trading venture, Antagonistic Trading Co., could become more significant than trading alone. Antagonistic had focused on markets and proprietary trading-system development; Ripfumelo came to see that building a broader technology infrastructure around software, automation, cybersecurity and intelligent systems could take the venture well beyond its original purpose. That realization led to CodePhantom Technologies.",
+    "As his software knowledge grew, he started to recognize that the technology behind his original trading venture, Antagonistic Trading Co., could become more significant than trading alone. Antagonistic had focused on markets and proprietary trading-system development; GingerCodePhantom came to see that building a broader technology infrastructure around software, automation, cybersecurity and intelligent systems could take the venture well beyond its original purpose. That realization led to CodePhantom Technologies.",
     "His strongest engineering interest is building systems that can grow into real products, platforms or businesses — not just working prototypes. Long term, he wants to grow CodePhantom Technologies internationally, and eventually develop a wider group of technology-driven ventures under the CodePhantom ecosystem.",
   ],
   education: {

@@ -1,3 +1,5 @@
+import { company, founderByline } from "@/lib/company";
+
 /**
  * Central site configuration: identity, socials, and contact channels.
  *
@@ -23,17 +25,17 @@ export const siteUrl =
     : "http://localhost:3000";
 
 export const siteConfig = {
-  name: "CodePhantom Technologies",
-  shortName: "CodePhantom",
-  tagline: "Engineering Intelligent Systems.",
+  name: company.brand.name,
+  shortName: company.brand.shortName,
+  tagline: company.brand.tagline,
   description:
     "CodePhantom Technologies engineers software, security, automation and quantitative systems designed to solve complex problems with precision.",
   url: siteUrl,
   locale: "en_US",
   themeColor: "#05070D",
   founder: {
-    name: "Ripfumelo Ngobeni",
-    role: "Founder, CodePhantom Technologies",
+    name: company.founder.publicName,
+    role: founderByline,
   },
 } as const;
 
@@ -67,7 +69,7 @@ export const hasAnyContactChannel = Object.values(socials).some(
 );
 
 /**
- * Founder-specific social channels (Ripfumelo's own accounts). Instagram in
+ * Founder-specific social channels (GingerCodePhantom's own accounts). Instagram in
  * particular is his personal/professional account, used for both
  * CodePhantom-related and lifestyle content — it must never be presented as
  * an official CodePhantom Technologies channel. He currently has only a
@@ -84,20 +86,50 @@ export const founderSocials = {
 /**
  * CodePhantom community channels (distinct from 1:1 contact channels).
  *
- * The WhatsApp community invite link is configured per deployment through
- * NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL so it can be set or rotated without a
- * code change. It is only accepted if it is a genuine WhatsApp invite link
- * (https://chat.whatsapp.com/<code>); anything else - including unset -
- * hides the community CTA entirely. Never put a personal number here.
+ * The WhatsApp group is "CodePhantom Traders" (the existing group, formerly
+ * TAT Market Direction). Its invite link is configured per deployment
+ * through NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL so it can be set or rotated
+ * without a code change; see parseWhatsAppInvite for what is accepted.
+ * Unset or invalid hides the community CTA entirely. Never put a personal
+ * phone number here.
  */
-const WHATSAPP_INVITE = /^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]{10,40}$/;
-const configuredCommunity = process.env.NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL?.trim();
+const WHATSAPP_INVITE_CODE = /^[A-Za-z0-9]{10,40}$/;
+
+/**
+ * Accepts a genuine WhatsApp group invite link and returns its canonical
+ * form, or null. Accepted: https, host exactly chat.whatsapp.com, default
+ * port, no credentials, a single path segment that is an invite code
+ * (optional trailing slash), and optional query parameters such as the
+ * share-tracking ones WhatsApp adds (?s=cl&p=a&...). The canonical URL
+ * drops the query string and fragment: the invite code alone opens the
+ * group, and nothing caller-supplied beyond the code reaches the page.
+ * Rejected: other hosts (incl. look-alikes such as
+ * chat.whatsapp.com.evil.example), http, userinfo, ports, extra path
+ * segments, and anything that fails to parse.
+ */
+export function parseWhatsAppInvite(raw: string | undefined | null): string | null {
+  const value = raw?.trim();
+  if (!value) return null;
+  let url: URL;
+  try {
+    url = new URL(value);
+  } catch {
+    return null;
+  }
+  if (url.protocol !== "https:" || url.hostname !== "chat.whatsapp.com") return null;
+  if (url.port !== "" || url.username !== "" || url.password !== "") return null;
+  const code = url.pathname.replace(/^\//, "").replace(/\/$/, "");
+  if (!WHATSAPP_INVITE_CODE.test(code)) return null;
+  return `https://chat.whatsapp.com/${code}`;
+}
 
 export const community = {
-  whatsapp:
-    configuredCommunity && WHATSAPP_INVITE.test(configuredCommunity)
-      ? configuredCommunity
-      : (null as string | null),
+  whatsapp: {
+    name: "CodePhantom Traders",
+    formerName: "TAT Market Direction",
+    description: "Market discussion, setups and CodePhantom updates.",
+    url: parseWhatsAppInvite(process.env.NEXT_PUBLIC_WHATSAPP_COMMUNITY_URL),
+  },
 } as const;
 
 /**

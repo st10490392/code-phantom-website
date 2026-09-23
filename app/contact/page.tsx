@@ -160,7 +160,7 @@ export default function ContactPage() {
               ))}
             </div>
             <p className="mt-6 text-center text-xs leading-relaxed text-muted-text">
-              These are Ripfumelo Ngobeni&rsquo;s personal founder channels —
+              These are GingerCodePhantom&rsquo;s personal founder channels —
               Instagram in particular is his personal/professional account,
               not an official CodePhantom Technologies channel.
             </p>
