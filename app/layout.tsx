@@ -34,6 +34,9 @@ export const metadata: Metadata = {
     template: `%s — ${siteConfig.shortName}`,
   },
   description: siteConfig.description,
+  applicationName: siteConfig.name,
+  creator: siteConfig.founder.name,
+  publisher: siteConfig.name,
   keywords: [
     "CodePhantom",
     "CodePhantom Technologies",
@@ -42,8 +45,9 @@ export const metadata: Metadata = {
     "intelligent automation",
     "quantitative technology",
     "Phantom Traders",
+    "Ripfumelo Ngobeni",
   ],
-  authors: [{ name: siteConfig.founder.name }],
+  authors: [{ name: siteConfig.founder.name, url: `${siteConfig.url}/founder` }],
   openGraph: {
     type: "website",
     url: siteConfig.url,

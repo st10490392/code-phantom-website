@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Section, SectionHeading, Badge } from "@/components/ui/section";
@@ -11,6 +12,7 @@ import { getFeaturedProjects } from "@/lib/projects";
 import { originStory } from "@/lib/company-history";
 import { founder } from "@/lib/founder";
 import { ArrowRightIcon } from "@/components/icons";
+import { Testimonials } from "@/components/testimonials";
 
 const disciplines = [
   "Software Engineering",
@@ -18,6 +20,10 @@ const disciplines = [
   "Intelligent Automation",
   "Quantitative Technology",
 ];
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function HomePage() {
   const featured = getFeaturedProjects();
@@ -233,6 +239,9 @@ export default function HomePage() {
           </Reveal>
         </div>
       </Section>
+
+      {/* TESTIMONIALS - renders nothing until moderated testimonials exist */}
+      <Testimonials />
 
       {/* FINAL CTA */}
       <Section className="border-t border-metallic-silver/10">

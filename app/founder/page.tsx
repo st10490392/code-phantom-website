@@ -6,16 +6,30 @@ import { founder } from "@/lib/founder";
 import { ArrowRightIcon, GitHubIcon, LinkedInIcon, InstagramIcon } from "@/components/icons";
 import { founderSocials } from "@/lib/site-config";
 import { NetworkBackground } from "@/components/network-background";
+import { FounderJsonLd } from "@/components/structured-data";
+
+const founderDescription =
+  "Ripfumelo Ngobeni, founder of CodePhantom Technologies — an early-career software developer building software, security and trading technology.";
 
 export const metadata: Metadata = {
-  title: "Founder",
-  description:
-    "Ripfumelo Ngobeni, founder of CodePhantom Technologies — an early-career software developer building software, security and trading technology.",
+  title: "Ripfumelo Ngobeni — Founder",
+  description: founderDescription,
+  alternates: { canonical: "/founder" },
+  openGraph: {
+    type: "profile",
+    url: "/founder",
+    title: "Ripfumelo Ngobeni — Founder of CodePhantom Technologies",
+    description: founderDescription,
+    firstName: "Ripfumelo",
+    lastName: "Ngobeni",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "CodePhantom Technologies" }],
+  },
 };
 
 export default function FounderPage() {
   return (
     <>
+      <FounderJsonLd />
       <section className="relative overflow-hidden pt-36 pb-20 md:pt-48 md:pb-24">
         <NetworkBackground className="absolute inset-0 opacity-40" />
         <div className="container-phantom relative">
