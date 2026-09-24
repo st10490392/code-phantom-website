@@ -202,7 +202,22 @@ export const knowledgeBase: KnowledgeEntry[] = [
     ],
     keywords: ["projects", "portfolio", "work", "building"],
     answer:
-      "Current project areas include CPT Scanner and the CodePhantom Android app (both in development), Code Phantom EA (trading system R&D), a C# Cybersecurity Bot, a collection of Java software projects, and web development projects including this website. See the Products and Projects pages.",
+      "CodePhantom engineering work currently includes CPT Scanner, Code Phantom EA, the CodePhantom Android app and the official CodePhantom website. Separately, GingerCodePhantom's academic portfolio includes Java and C# Portfolio of Evidence coursework. Those academic projects demonstrate his learning background and are not CodePhantom products or commercial services. See the Products and Projects pages.",
+  },
+  {
+    id: "academic-projects",
+    questions: [
+      "are the java projects codephantom products",
+      "are the c sharp projects codephantom products",
+      "what are the java projects",
+      "what is the c sharp cybersecurity bot",
+      "are these school projects",
+      "academic projects",
+      "school poes",
+    ],
+    keywords: ["java", "csharp", "academic", "school", "poe", "coursework"],
+    answer:
+      "The Java software POEs and C# cybersecurity POE are academic projects from GingerCodePhantom's software-development studies. They are shown as founder portfolio work, not as CodePhantom products, client work or commercial services.",
   },
   {
     id: "careers",
