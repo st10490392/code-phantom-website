@@ -45,6 +45,7 @@ export default function ProjectDetailPage({
               ← All projects
             </Link>
             <div className="mt-6 flex flex-wrap items-center gap-3">
+              <Badge>{project.scope}</Badge>
               <Badge>{project.category}</Badge>
               <span className="text-xs font-mono text-muted-text">
                 {project.status}
@@ -95,6 +96,12 @@ export default function ProjectDetailPage({
                   Status
                 </h3>
                 <p className="mt-1 text-sm text-ghost-white">{project.status}</p>
+              </div>
+              <div>
+                <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-text">
+                  Scope
+                </h3>
+                <p className="mt-1 text-sm text-ghost-white">{project.scope}</p>
               </div>
               <div>
                 <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-text">

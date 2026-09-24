@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Section, SectionHeading, Badge } from "@/components/ui/section";
@@ -11,6 +12,7 @@ import { getFeaturedProjects } from "@/lib/projects";
 import { originStory } from "@/lib/company-history";
 import { founder } from "@/lib/founder";
 import { ArrowRightIcon } from "@/components/icons";
+import { Testimonials } from "@/components/testimonials";
 
 const disciplines = [
   "Software Engineering",
@@ -18,6 +20,10 @@ const disciplines = [
   "Intelligent Automation",
   "Quantitative Technology",
 ];
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function HomePage() {
   const featured = getFeaturedProjects();
@@ -217,8 +223,9 @@ export default function HomePage() {
               Founder
             </p>
             <h2 className="font-display text-3xl font-semibold text-ghost-white tracking-tight">
-              {founder.name}
+              {founder.alias}
             </h2>
+            <p className="mt-1 text-base text-ghost-white/90">{founder.name}</p>
             <p className="mt-2 text-sm text-cyber-blue">{founder.role}</p>
             <div className="mt-6">
               <Button href="/founder" variant="ghost" icon={<ArrowRightIcon className="h-4 w-4" />}>
@@ -233,6 +240,9 @@ export default function HomePage() {
           </Reveal>
         </div>
       </Section>
+
+      {/* TESTIMONIALS - renders nothing until moderated testimonials exist */}
+      <Testimonials />
 
       {/* FINAL CTA */}
       <Section className="border-t border-metallic-silver/10">

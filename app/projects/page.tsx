@@ -2,21 +2,33 @@ import type { Metadata } from "next";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { ProjectCard } from "@/components/cards";
-import { projects, type ProjectCategory } from "@/lib/projects";
+import { projects, type ProjectScope } from "@/lib/projects";
 import { NetworkBackground } from "@/components/network-background";
 import { GitHubIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Real, active CodePhantom engineering projects — Code Phantom EA, security tooling, Java software projects and web development.",
+    "CodePhantom engineering projects and products, plus clearly separated academic Java and C# portfolio work by founder GingerCodePhantom.",
 };
 
-const categories: ProjectCategory[] = [
-  "Quantitative Technology",
-  "Cybersecurity",
-  "Software Engineering",
-  "Web Development",
+const sections: {
+  scope: ProjectScope;
+  title: string;
+  description: string;
+}[] = [
+  {
+    scope: "CodePhantom",
+    title: "CodePhantom Engineering",
+    description:
+      "Company products, platforms and research systems being built under CodePhantom Technologies.",
+  },
+  {
+    scope: "Academic / Portfolio",
+    title: "Academic / Portfolio Work",
+    description:
+      "Selected Java and C# coursework and Portfolio of Evidence projects from GingerCodePhantom's software-development studies. These demonstrate the founder's learning and engineering background; they are not CodePhantom products or commercial services.",
+  },
 ];
 
 export default function ProjectsPage() {
@@ -30,11 +42,11 @@ export default function ProjectsPage() {
               Projects
             </p>
             <h1 className="font-display text-4xl font-semibold text-ghost-white tracking-tight md:text-5xl max-w-3xl">
-              Selected engineering.
+              Engineering work, clearly separated.
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-text md:text-lg">
-              Real projects, at various stages of development. See more on
-              GitHub.
+              CodePhantom products and research are shown separately from the
+              founder&rsquo;s academic Java and C# portfolio work.
             </p>
             <a
               href="https://github.com/st10490392"
@@ -49,18 +61,27 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {categories.map((category, ci) => {
-        const items = projects.filter((p) => p.category === category);
+      {sections.map((section, si) => {
+        const items = projects.filter((p) => p.scope === section.scope);
         if (items.length === 0) return null;
         return (
           <Section
-            key={category}
-            className={ci === 0 ? "border-t border-metallic-silver/10" : "border-t border-metallic-silver/10 bg-midnight-navy/40"}
+            key={section.scope}
+            className={
+              si === 0
+                ? "border-t border-metallic-silver/10"
+                : "border-t border-metallic-silver/10 bg-midnight-navy/40"
+            }
           >
             <Reveal>
-              <h2 className="font-display text-2xl font-semibold text-ghost-white mb-8">
-                {category}
-              </h2>
+              <div className="mb-8 max-w-3xl">
+                <h2 className="font-display text-2xl font-semibold text-ghost-white">
+                  {section.title}
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-muted-text">
+                  {section.description}
+                </p>
+              </div>
             </Reveal>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {items.map((p, i) => (
