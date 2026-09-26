@@ -7,6 +7,7 @@ import { PhantomAssistant } from "@/components/phantom-assistant";
 import { OrganizationJsonLd } from "@/components/structured-data";
 import { siteConfig } from "@/lib/site-config";
 import { founderDisplayName } from "@/lib/company";
+import { PwaRegister } from "@/components/pwa-register";
 
 const displayFont = Space_Grotesk({
   subsets: ["latin"],
@@ -87,6 +88,7 @@ export default function RootLayout({
     <html lang="en" className={`${displayFont.variable} ${sansFont.variable} ${monoFont.variable}`}>
       <body className="min-h-screen bg-phantom-black font-sans text-ghost-white antialiased">
         <OrganizationJsonLd />
+        <PwaRegister />
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
