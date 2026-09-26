@@ -14,7 +14,7 @@ export default function PaymentReturnPage() {
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Payment return</p>
           <h1 className="mt-4 font-display text-3xl font-semibold text-ghost-white">We are confirming your payment.</h1>
           <p className="mt-4 leading-relaxed text-muted-text">
-            CodePhantom grants access only after the payment provider's verified webhook reaches our backend.
+            CodePhantom grants access only after the payment provider&apos;s verified webhook reaches our backend.
             Return to the portal and refresh your services in a few seconds.
           </p>
           <Link
