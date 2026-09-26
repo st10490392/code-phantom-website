@@ -239,6 +239,9 @@ export function PortalShell({ plans }: { plans: PublicPlan[] }) {
                 <button disabled={busy} className="w-full rounded-full bg-phantom-gradient px-6 py-3 text-sm font-medium text-white disabled:opacity-50">
                   {busy ? "Signing in…" : "Sign in"}
                 </button>
+                <a href="/forgot-password" className="block text-center text-sm text-cyber-blue hover:text-electric-blue">
+                  Forgot password?
+                </a>
               </form>
             ) : (
               <form onSubmit={register} className="space-y-4">
