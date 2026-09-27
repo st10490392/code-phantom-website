@@ -14,10 +14,10 @@ export async function POST(request: Request) {
   const orderId = body && typeof body.order_id === "string" ? body.order_id : "";
   if (!orderId) return NextResponse.json({ error: "PayPal order is required." }, { status: 400 });
 
-  let access = currentAccessToken();
+  let access = await currentAccessToken();
   let refreshed: Awaited<ReturnType<typeof refreshBackendSession>> = null;
   if (!access) {
-    const refresh = currentRefreshToken();
+    const refresh = await currentRefreshToken();
     if (refresh) refreshed = await refreshBackendSession(refresh).catch(() => null);
     access = refreshed?.accessToken;
   }
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   });
 
   if (backend.status === 401) {
-    const refresh = currentRefreshToken();
+    const refresh = await currentRefreshToken();
     if (refresh) refreshed = await refreshBackendSession(refresh).catch(() => null);
     if (refreshed) {
       backend = await backendFetch("/commerce/paypal/capture", {

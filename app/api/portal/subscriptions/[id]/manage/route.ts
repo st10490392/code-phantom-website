@@ -9,11 +9,12 @@ import {
   refreshBackendSession,
 } from "@/lib/portal-server";
 
-export async function POST(_request: Request, { params }: { params: { id: string } }) {
-  let access = currentAccessToken();
+export async function POST(_request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+  let access = await currentAccessToken();
   let refreshed: Awaited<ReturnType<typeof refreshBackendSession>> = null;
   if (!access) {
-    const refresh = currentRefreshToken();
+    const refresh = await currentRefreshToken();
     if (refresh) refreshed = await refreshBackendSession(refresh).catch(() => null);
     access = refreshed?.accessToken;
   }
@@ -27,7 +28,7 @@ export async function POST(_request: Request, { params }: { params: { id: string
 
   let backend = await call(access);
   if (backend.status === 401) {
-    const refresh = currentRefreshToken();
+    const refresh = await currentRefreshToken();
     if (refresh) refreshed = await refreshBackendSession(refresh).catch(() => null);
     if (refreshed) backend = await call(refreshed.accessToken);
   }
