@@ -43,6 +43,18 @@ type SessionPayload = {
     created_at: string;
     paid_at: string | null;
   }>;
+  subscriptions?: Array<{
+    id: string;
+    plan_code: string;
+    provider: string;
+    status: "ACTIVE" | "NON_RENEWING" | "ATTENTION" | "CANCELLED" | "COMPLETED";
+    amount_minor: string | number | null;
+    currency: string | null;
+    current_period_start: string | null;
+    current_period_end: string | null;
+    next_payment_at: string | null;
+    created_at: string;
+  }>;
 };
 
 function price(plan: PublicPlan) {
@@ -178,6 +190,24 @@ export function PortalShell({ plans }: { plans: PublicPlan[] }) {
         return;
       }
       window.location.assign(body.authorization_url);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function manageSubscription(id: string) {
+    setBusy(true);
+    setMessage("");
+    try {
+      const response = await fetch(`/api/portal/subscriptions/${encodeURIComponent(id)}/manage`, {
+        method: "POST",
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok || typeof body.url !== "string") {
+        setMessage(body.error ?? "Subscription management is unavailable.");
+        return;
+      }
+      window.location.assign(body.url);
     } finally {
       setBusy(false);
     }
@@ -378,13 +408,57 @@ export function PortalShell({ plans }: { plans: PublicPlan[] }) {
                         onClick={() => void checkout(plan.code)}
                         className="mt-5 w-full rounded-full bg-phantom-gradient px-5 py-2.5 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-40"
                       >
-                        Purchase
+                        {plan.billingType === "SUBSCRIPTION" ? "Subscribe" : "Purchase"}
                       </button>
                     </article>
                   ))}
                 </div>
               )}
             </div>
+
+            {(session.subscriptions ?? []).length > 0 && (
+              <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
+                <div className="flex flex-wrap items-end justify-between gap-3">
+                  <div>
+                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Billing</p>
+                    <h2 className="mt-2 font-display text-xl font-semibold text-ghost-white">Subscriptions</h2>
+                  </div>
+                  <p className="text-sm text-muted-text">Manage payment method or cancellation through Paystack's secure hosted page.</p>
+                </div>
+                <div className="mt-5 grid gap-4 md:grid-cols-2">
+                  {(session.subscriptions ?? []).map((subscription) => (
+                    <article key={subscription.id} className="rounded-xl border border-metallic-silver/10 bg-surface/60 p-5">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <h3 className="font-display text-lg font-semibold text-ghost-white">{subscription.plan_code}</h3>
+                          <p className="mt-1 text-xs text-muted-text">{subscription.provider}</p>
+                        </div>
+                        <span className="rounded-full border border-metallic-silver/15 px-3 py-1 text-xs text-metallic-silver">
+                          {subscription.status.replaceAll("_", " ")}
+                        </span>
+                      </div>
+                      {subscription.next_payment_at && subscription.status === "ACTIVE" ? (
+                        <p className="mt-4 text-sm text-muted-text">
+                          Next payment: {new Date(subscription.next_payment_at).toLocaleDateString()}
+                        </p>
+                      ) : subscription.current_period_end ? (
+                        <p className="mt-4 text-sm text-muted-text">
+                          Access through: {new Date(subscription.current_period_end).toLocaleDateString()}
+                        </p>
+                      ) : null}
+                      <button
+                        type="button"
+                        disabled={busy}
+                        onClick={() => void manageSubscription(subscription.id)}
+                        className="mt-5 rounded-full border border-cyber-blue/30 px-4 py-2 text-sm text-ghost-white hover:bg-cyber-blue/10 disabled:opacity-50"
+                      >
+                        Manage subscription
+                      </button>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
               <h2 className="font-display text-xl font-semibold text-ghost-white">Purchase history</h2>
