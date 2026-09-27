@@ -423,7 +423,7 @@ export function PortalShell({ plans }: { plans: PublicPlan[] }) {
                     <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Billing</p>
                     <h2 className="mt-2 font-display text-xl font-semibold text-ghost-white">Subscriptions</h2>
                   </div>
-                  <p className="text-sm text-muted-text">Manage payment method or cancellation through Paystack's secure hosted page.</p>
+                  <p className="text-sm text-muted-text">Manage payment method or cancellation through Paystack&apos;s secure hosted page.</p>
                 </div>
                 <div className="mt-5 grid gap-4 md:grid-cols-2">
                   {(session.subscriptions ?? []).map((subscription) => (
