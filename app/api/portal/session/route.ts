@@ -11,12 +11,13 @@ import {
 
 async function load(accessToken: string) {
   const headers = { Authorization: `Bearer ${accessToken}` };
-  const [me, access, purchases] = await Promise.all([
+  const [me, access, purchases, subscriptions] = await Promise.all([
     backendFetch("/me", { headers }),
     backendFetch("/me/access", { headers }),
     backendFetch("/commerce/purchases", { headers }),
+    backendFetch("/commerce/subscriptions", { headers }),
   ]);
-  return { me, access, purchases };
+  return { me, access, purchases, subscriptions };
 }
 
 export async function GET() {
@@ -50,10 +51,11 @@ export async function GET() {
     return response;
   }
 
-  const [meBody, accessBody, purchasesBody] = await Promise.all([
+  const [meBody, accessBody, purchasesBody, subscriptionsBody] = await Promise.all([
     loaded.me.json().catch(() => ({})),
     loaded.access.ok ? loaded.access.json().catch(() => ({})) : Promise.resolve({}),
     loaded.purchases.ok ? loaded.purchases.json().catch(() => ({})) : Promise.resolve({}),
+    loaded.subscriptions.ok ? loaded.subscriptions.json().catch(() => ({})) : Promise.resolve({}),
   ]);
 
   const response = NextResponse.json({
@@ -61,6 +63,7 @@ export async function GET() {
     me: meBody.data ?? null,
     access: accessBody.data ?? null,
     purchases: purchasesBody.data ?? [],
+    subscriptions: subscriptionsBody.data ?? [],
   });
   if (refreshed) {
     response.cookies.set(ACCESS_COOKIE, refreshed.accessToken, cookieOptions(refreshed.expiresIn));
