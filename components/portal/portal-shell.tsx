@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
-import type { PublicPlan } from "@/lib/platform-api";
+import type { PublicPaymentMethod, PublicPlan } from "@/lib/platform-api";
 import { PwaInstallButton } from "@/components/pwa-install";
 
 type SessionPayload = {
@@ -115,7 +115,13 @@ function billingLabel(plan: PublicPlan) {
   return plan.billingType.replaceAll("_", " ").toLowerCase();
 }
 
-export function PortalShell({ plans }: { plans: PublicPlan[] }) {
+export function PortalShell({
+  plans,
+  paymentMethods,
+}: {
+  plans: PublicPlan[];
+  paymentMethods: PublicPaymentMethod[];
+}) {
   const [session, setSession] = useState<SessionPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<"login" | "register">("login");
@@ -213,14 +219,14 @@ export function PortalShell({ plans }: { plans: PublicPlan[] }) {
     setBusy(false);
   }
 
-  async function checkout(planCode: string) {
+  async function checkout(planCode: string, provider: PublicPaymentMethod["code"]) {
     setBusy(true);
     setMessage("");
     try {
       const response = await fetch("/api/portal/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan_code: planCode }),
+        body: JSON.stringify({ plan_code: planCode, provider }),
       });
       const body = await response.json().catch(() => ({}));
       if (!response.ok || typeof body.authorization_url !== "string") {
@@ -552,14 +558,30 @@ export function PortalShell({ plans }: { plans: PublicPlan[] }) {
                       {plan.trialEligible && plan.trialDays ? (
                         <p className="mt-3 text-xs text-cyber-blue">{plan.trialDays}-day trial available</p>
                       ) : null}
-                      <button
-                        type="button"
-                        disabled={busy || plan.priceAmountMinor === null}
-                        onClick={() => void checkout(plan.code)}
-                        className="mt-5 w-full rounded-full bg-phantom-gradient px-5 py-2.5 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-40"
-                      >
-                        {plan.billingType === "SUBSCRIPTION" ? "Subscribe" : "Purchase"}
-                      </button>
+                      <div className="mt-5 space-y-2">
+                        {paymentMethods
+                          .filter((method) => plan.billingType !== "SUBSCRIPTION" || method.recurring)
+                          .map((method, index) => (
+                            <button
+                              key={method.code}
+                              type="button"
+                              disabled={busy || plan.priceAmountMinor === null}
+                              onClick={() => void checkout(plan.code, method.code)}
+                              className={
+                                index === 0
+                                  ? "w-full rounded-full bg-phantom-gradient px-5 py-2.5 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-40"
+                                  : "w-full rounded-full border border-metallic-silver/15 bg-phantom-black/40 px-5 py-2.5 text-sm font-medium text-ghost-white transition hover:border-cyber-blue/40 hover:bg-cyber-blue/5 disabled:cursor-not-allowed disabled:opacity-40"
+                              }
+                            >
+                              {plan.billingType === "SUBSCRIPTION" ? `Subscribe with ${method.name}` : `Pay with ${method.name}`}
+                            </button>
+                          ))}
+                        {paymentMethods.filter((method) => plan.billingType !== "SUBSCRIPTION" || method.recurring).length === 0 && (
+                          <p className="rounded-xl border border-metallic-silver/10 bg-phantom-black/40 p-3 text-center text-xs text-muted-text">
+                            Checkout is not enabled for this plan yet.
+                          </p>
+                        )}
+                      </div>
                     </article>
                   ))}
                 </div>
