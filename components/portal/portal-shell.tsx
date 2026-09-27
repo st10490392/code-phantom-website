@@ -55,6 +55,44 @@ type SessionPayload = {
     next_payment_at: string | null;
     created_at: string;
   }>;
+  scanner_setups?: Array<{
+    id: string;
+    symbol: string;
+    timeframe: string;
+    direction: "BUY" | "SELL";
+    entry: string | number;
+    stop_loss: string | number;
+    take_profits: Array<string | number>;
+    status: string;
+    weekly_bias: string | null;
+    daily_bias: string | null;
+    session: string | null;
+    confluence_score: number;
+    confluence_max: number;
+    detected_at: string;
+  }>;
+  signals?: Array<{
+    id: string;
+    symbol: string;
+    timeframe: string;
+    direction: "BUY" | "SELL";
+    entry: string | number;
+    stop_loss: string | number;
+    take_profits: Array<string | number>;
+    status: string;
+    result: string | null;
+    published_at: string | null;
+    created_at: string;
+  }>;
+  notifications?: Array<{
+    id: string;
+    type: string;
+    priority: "INFO" | "SUCCESS" | "WARNING" | "CRITICAL";
+    title: string;
+    body: string | null;
+    read_at: string | null;
+    created_at: string;
+  }>;
 };
 
 function price(plan: PublicPlan) {
@@ -378,6 +416,118 @@ export function PortalShell({ plans }: { plans: PublicPlan[] }) {
                 </button>
               </div>
             </div>
+
+            {(session.scanner_setups ?? []).length > 0 && (
+              <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
+                <div className="flex flex-wrap items-end justify-between gap-3">
+                  <div>
+                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Scanner</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">Reviewed setups</h2>
+                  </div>
+                  <p className="text-sm text-muted-text">Only setups your account is entitled to view are returned by the backend.</p>
+                </div>
+                <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {(session.scanner_setups ?? []).map((setup) => (
+                    <article key={setup.id} className="rounded-xl border border-metallic-silver/10 bg-surface/60 p-5">
+                      <div className="flex items-center justify-between gap-3">
+                        <h3 className="font-display text-lg font-semibold text-ghost-white">
+                          {setup.symbol} {setup.direction}
+                        </h3>
+                        <span className="rounded-full border border-metallic-silver/15 px-2.5 py-1 text-xs text-metallic-silver">
+                          {setup.timeframe}
+                        </span>
+                      </div>
+                      <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <dt className="text-muted-text">Entry</dt>
+                          <dd className="mt-1 text-ghost-white">{String(setup.entry)}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-muted-text">Stop loss</dt>
+                          <dd className="mt-1 text-ghost-white">{String(setup.stop_loss)}</dd>
+                        </div>
+                      </dl>
+                      {setup.take_profits?.length > 0 && (
+                        <p className="mt-4 text-sm text-muted-text">
+                          TP: <span className="text-metallic-silver">{setup.take_profits.map(String).join(" · ")}</span>
+                        </p>
+                      )}
+                      {setup.confluence_max > 0 && (
+                        <p className="mt-3 text-xs text-muted-text">
+                          Confluence {setup.confluence_score}/{setup.confluence_max}
+                        </p>
+                      )}
+                      <p className="mt-3 text-xs text-muted-text">{new Date(setup.detected_at).toLocaleString()}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {(session.signals ?? []).length > 0 && (
+              <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Signals</p>
+                  <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">Published signals</h2>
+                </div>
+                <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {(session.signals ?? []).map((signal) => (
+                    <article key={signal.id} className="rounded-xl border border-metallic-silver/10 bg-surface/60 p-5">
+                      <div className="flex items-center justify-between gap-3">
+                        <h3 className="font-display text-lg font-semibold text-ghost-white">
+                          {signal.symbol} {signal.direction}
+                        </h3>
+                        <span className="rounded-full border border-cyber-blue/25 bg-cyber-blue/5 px-2.5 py-1 text-xs text-metallic-silver">
+                          {signal.status.replaceAll("_", " ")}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-xs text-muted-text">{signal.timeframe}</p>
+                      <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <dt className="text-muted-text">Entry</dt>
+                          <dd className="mt-1 text-ghost-white">{String(signal.entry)}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-muted-text">Stop loss</dt>
+                          <dd className="mt-1 text-ghost-white">{String(signal.stop_loss)}</dd>
+                        </div>
+                      </dl>
+                      {signal.take_profits?.length > 0 && (
+                        <p className="mt-4 text-sm text-muted-text">
+                          TP: <span className="text-metallic-silver">{signal.take_profits.map(String).join(" · ")}</span>
+                        </p>
+                      )}
+                      <p className="mt-3 text-xs text-muted-text">
+                        {new Date(signal.published_at ?? signal.created_at).toLocaleString()}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {(session.notifications ?? []).length > 0 && (
+              <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Updates</p>
+                  <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">Notifications & announcements</h2>
+                </div>
+                <div className="mt-5 space-y-3">
+                  {(session.notifications ?? []).map((notification) => (
+                    <article
+                      key={notification.id}
+                      className={`rounded-xl border p-4 ${notification.read_at ? "border-metallic-silver/10 bg-surface/40" : "border-cyber-blue/25 bg-cyber-blue/5"}`}
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <h3 className="font-medium text-ghost-white">{notification.title}</h3>
+                        <span className="text-xs text-muted-text">{new Date(notification.created_at).toLocaleString()}</span>
+                      </div>
+                      {notification.body && <p className="mt-2 text-sm leading-relaxed text-muted-text">{notification.body}</p>}
+                    </article>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
               <div className="flex flex-wrap items-end justify-between gap-3">
