@@ -152,3 +152,35 @@ export async function getApiHealth(): Promise<ApiHealth> {
   }
 }
 
+
+
+export type PublicPaymentMethod = {
+  code: "paystack" | "paypal" | "skrill" | "binance_pay";
+  name: string;
+  description: string;
+  recurring: boolean;
+  kind: "fiat" | "wallet" | "crypto";
+};
+
+export async function getPublicPaymentMethods(): Promise<PublicPaymentMethod[]> {
+  const out: PublicPaymentMethod[] = [];
+  for (const row of await getPublic("/payment-methods")) {
+    const r = row as Record<string, unknown>;
+    if (
+      (r.code === "paystack" || r.code === "paypal" || r.code === "skrill" || r.code === "binance_pay") &&
+      typeof r.name === "string" &&
+      typeof r.description === "string" &&
+      typeof r.recurring === "boolean" &&
+      (r.kind === "fiat" || r.kind === "wallet" || r.kind === "crypto")
+    ) {
+      out.push({
+        code: r.code,
+        name: r.name,
+        description: r.description,
+        recurring: r.recurring,
+        kind: r.kind,
+      });
+    }
+  }
+  return out;
+}
