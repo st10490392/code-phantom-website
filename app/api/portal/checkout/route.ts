@@ -13,6 +13,10 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   const planCode = body && typeof body.plan_code === "string" ? body.plan_code : "";
   const offerCode = body && typeof body.offer_code === "string" ? body.offer_code : undefined;
+  const provider =
+    body && ["paystack", "paypal", "skrill", "binance_pay"].includes(body.provider)
+      ? body.provider
+      : undefined;
   if (!planCode) return NextResponse.json({ error: "Plan is required." }, { status: 400 });
 
   let access = currentAccessToken();
@@ -27,7 +31,7 @@ export async function POST(request: Request) {
   let backend = await backendFetch("/commerce/checkout", {
     method: "POST",
     headers: { Authorization: `Bearer ${access}` },
-    body: JSON.stringify({ plan_code: planCode, offer_code: offerCode }),
+    body: JSON.stringify({ plan_code: planCode, offer_code: offerCode, provider }),
   });
 
   if (backend.status === 401) {
@@ -37,7 +41,7 @@ export async function POST(request: Request) {
       backend = await backendFetch("/commerce/checkout", {
         method: "POST",
         headers: { Authorization: `Bearer ${refreshed.accessToken}` },
-        body: JSON.stringify({ plan_code: planCode, offer_code: offerCode }),
+        body: JSON.stringify({ plan_code: planCode, offer_code: offerCode, provider }),
       });
     }
   }
