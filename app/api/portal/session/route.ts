@@ -11,13 +11,16 @@ import {
 
 async function load(accessToken: string) {
   const headers = { Authorization: `Bearer ${accessToken}` };
-  const [me, access, purchases, subscriptions] = await Promise.all([
+  const [me, access, purchases, subscriptions, scanner, signals, notifications] = await Promise.all([
     backendFetch("/me", { headers }),
     backendFetch("/me/access", { headers }),
     backendFetch("/commerce/purchases", { headers }),
     backendFetch("/commerce/subscriptions", { headers }),
+    backendFetch("/scanner/setups?limit=20", { headers }),
+    backendFetch("/signals?limit=20", { headers }),
+    backendFetch("/notifications?limit=20", { headers }),
   ]);
-  return { me, access, purchases, subscriptions };
+  return { me, access, purchases, subscriptions, scanner, signals, notifications };
 }
 
 export async function GET() {
@@ -51,11 +54,14 @@ export async function GET() {
     return response;
   }
 
-  const [meBody, accessBody, purchasesBody, subscriptionsBody] = await Promise.all([
+  const [meBody, accessBody, purchasesBody, subscriptionsBody, scannerBody, signalsBody, notificationsBody] = await Promise.all([
     loaded.me.json().catch(() => ({})),
     loaded.access.ok ? loaded.access.json().catch(() => ({})) : Promise.resolve({}),
     loaded.purchases.ok ? loaded.purchases.json().catch(() => ({})) : Promise.resolve({}),
     loaded.subscriptions.ok ? loaded.subscriptions.json().catch(() => ({})) : Promise.resolve({}),
+    loaded.scanner.ok ? loaded.scanner.json().catch(() => ({})) : Promise.resolve({}),
+    loaded.signals.ok ? loaded.signals.json().catch(() => ({})) : Promise.resolve({}),
+    loaded.notifications.ok ? loaded.notifications.json().catch(() => ({})) : Promise.resolve({}),
   ]);
 
   const response = NextResponse.json({
@@ -64,6 +70,9 @@ export async function GET() {
     access: accessBody.data ?? null,
     purchases: purchasesBody.data ?? [],
     subscriptions: subscriptionsBody.data ?? [],
+    scanner_setups: scannerBody.data ?? [],
+    signals: signalsBody.data ?? [],
+    notifications: notificationsBody.data ?? [],
   });
   if (refreshed) {
     response.cookies.set(ACCESS_COOKIE, refreshed.accessToken, cookieOptions(refreshed.expiresIn));
