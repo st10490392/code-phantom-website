@@ -14,10 +14,10 @@ export async function POST(request: Request) {
   const reference = body && typeof body.reference === "string" ? body.reference : "";
   if (!reference) return NextResponse.json({ error: "Binance Pay reference is required." }, { status: 400 });
 
-  let access = currentAccessToken();
+  let access = await currentAccessToken();
   let refreshed: Awaited<ReturnType<typeof refreshBackendSession>> = null;
   if (!access) {
-    const refresh = currentRefreshToken();
+    const refresh = await currentRefreshToken();
     if (refresh) refreshed = await refreshBackendSession(refresh).catch(() => null);
     access = refreshed?.accessToken;
   }
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   });
 
   if (backend.status === 401) {
-    const refresh = currentRefreshToken();
+    const refresh = await currentRefreshToken();
     if (refresh) refreshed = await refreshBackendSession(refresh).catch(() => null);
     if (refreshed) {
       backend = await backendFetch("/commerce/binance-pay/confirm", {

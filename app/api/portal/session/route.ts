@@ -24,11 +24,11 @@ async function load(accessToken: string) {
 }
 
 export async function GET() {
-  let token = currentAccessToken();
+  let token = await currentAccessToken();
   let refreshed: Awaited<ReturnType<typeof refreshBackendSession>> = null;
 
   if (!token) {
-    const refresh = currentRefreshToken();
+    const refresh = await currentRefreshToken();
     if (refresh) refreshed = await refreshBackendSession(refresh).catch(() => null);
     token = refreshed?.accessToken;
   }
@@ -37,7 +37,7 @@ export async function GET() {
 
   let loaded = await load(token);
   if (loaded.me.status === 401) {
-    const refresh = currentRefreshToken();
+    const refresh = await currentRefreshToken();
     if (refresh) {
       refreshed = await refreshBackendSession(refresh).catch(() => null);
       if (refreshed) {

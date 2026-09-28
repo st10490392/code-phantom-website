@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { ACCESS_COOKIE, REFRESH_COOKIE, backendFetch, currentAccessToken } from "@/lib/portal-server";
 
 export async function POST() {
-  const access = currentAccessToken();
+  const access = await currentAccessToken();
   if (access) {
     await backendFetch("/auth/logout", {
       method: "POST",

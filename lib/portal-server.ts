@@ -41,12 +41,13 @@ export function cookieOptions(maxAge: number) {
   };
 }
 
-export function currentAccessToken(): string | undefined {
-  return cookies().get(ACCESS_COOKIE)?.value;
+// Next.js 15: request APIs such as cookies() are asynchronous.
+export async function currentAccessToken(): Promise<string | undefined> {
+  return (await cookies()).get(ACCESS_COOKIE)?.value;
 }
 
-export function currentRefreshToken(): string | undefined {
-  return cookies().get(REFRESH_COOKIE)?.value;
+export async function currentRefreshToken(): Promise<string | undefined> {
+  return (await cookies()).get(REFRESH_COOKIE)?.value;
 }
 
 export async function refreshBackendSession(refreshToken: string) {
