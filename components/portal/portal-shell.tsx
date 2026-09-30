@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
-import type { PublicPaymentMethod, PublicPlan } from "@/lib/platform-api";
 import { PwaInstallButton } from "@/components/pwa-install";
 
 type SessionPayload = {
@@ -32,29 +31,6 @@ type SessionPayload = {
     } | null;
     features?: string[];
   } | null;
-  purchases?: Array<{
-    id: string;
-    plan_code: string;
-    provider: string;
-    provider_reference: string;
-    status: string;
-    amount_minor: string | number | null;
-    currency: string | null;
-    created_at: string;
-    paid_at: string | null;
-  }>;
-  subscriptions?: Array<{
-    id: string;
-    plan_code: string;
-    provider: string;
-    status: "ACTIVE" | "NON_RENEWING" | "ATTENTION" | "CANCELLED" | "COMPLETED";
-    amount_minor: string | number | null;
-    currency: string | null;
-    current_period_start: string | null;
-    current_period_end: string | null;
-    next_payment_at: string | null;
-    created_at: string;
-  }>;
   scanner_setups?: Array<{
     id: string;
     symbol: string;
@@ -64,9 +40,6 @@ type SessionPayload = {
     stop_loss: string | number;
     take_profits: Array<string | number>;
     status: string;
-    weekly_bias: string | null;
-    daily_bias: string | null;
-    session: string | null;
     confluence_score: number;
     confluence_max: number;
     detected_at: string;
@@ -80,8 +53,10 @@ type SessionPayload = {
     stop_loss: string | number;
     take_profits: Array<string | number>;
     status: string;
-    result: string | null;
+    result: "WIN" | "LOSS" | "BREAKEVEN" | "PENDING" | null;
+    r_multiple: string | number | null;
     published_at: string | null;
+    closed_at: string | null;
     created_at: string;
   }>;
   notifications?: Array<{
@@ -93,35 +68,45 @@ type SessionPayload = {
     read_at: string | null;
     created_at: string;
   }>;
+  ea_accounts?: Array<{
+    id: string;
+    account_label?: string;
+    broker?: string | null;
+    risk_mode?: string;
+    risk_percentage?: string | number;
+    trading_enabled?: boolean;
+    status?: string;
+    runtime_status?: {
+      balance?: string | number | null;
+      equity?: string | number | null;
+      daily_pl?: string | number | null;
+      drawdown_percentage?: string | number | null;
+      open_trades_count?: number | null;
+      last_heartbeat_at?: string | null;
+    } | null;
+  }>;
 };
 
-function price(plan: PublicPlan) {
-  if (plan.priceAmountMinor === null || !plan.priceCurrency) return "Price not published";
-  try {
-    return new Intl.NumberFormat("en-ZA", {
-      style: "currency",
-      currency: plan.priceCurrency,
-    }).format(plan.priceAmountMinor / 100);
-  } catch {
-    return `${plan.priceCurrency} ${(plan.priceAmountMinor / 100).toFixed(2)}`;
+function num(value: string | number | null | undefined): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && value.trim() !== "") {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
   }
+  return null;
 }
 
-function billingLabel(plan: PublicPlan) {
-  if (plan.billingType === "LIFETIME") return "Lifetime";
-  if (plan.billingInterval === "MONTH") return "per month";
-  if (plan.billingInterval === "QUARTER") return "per quarter";
-  if (plan.billingInterval === "YEAR") return "per year";
-  return plan.billingType.replaceAll("_", " ").toLowerCase();
+function money(value: string | number | null | undefined) {
+  const parsed = num(value);
+  return parsed === null ? "—" : parsed.toFixed(2);
 }
 
-export function PortalShell({
-  plans,
-  paymentMethods,
-}: {
-  plans: PublicPlan[];
-  paymentMethods: PublicPaymentMethod[];
-}) {
+function pct(value: string | number | null | undefined) {
+  const parsed = num(value);
+  return parsed === null ? "—" : `${parsed.toFixed(2)}%`;
+}
+
+export function PortalShell() {
   const [session, setSession] = useState<SessionPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<"login" | "register">("login");
@@ -154,6 +139,25 @@ export function PortalShell({
     () => (session?.access?.scanner_markets ?? []).filter((market) => market.can_view),
     [session],
   );
+
+  const performance = useMemo(() => {
+    const resolved = (session?.signals ?? []).filter(
+      (signal) => signal.result === "WIN" || signal.result === "LOSS" || signal.result === "BREAKEVEN",
+    );
+    const wins = resolved.filter((signal) => signal.result === "WIN").length;
+    const losses = resolved.filter((signal) => signal.result === "LOSS").length;
+    const breakeven = resolved.filter((signal) => signal.result === "BREAKEVEN").length;
+    const decided = wins + losses;
+    const rValues = resolved.map((signal) => num(signal.r_multiple)).filter((value): value is number => value !== null);
+    return {
+      total: resolved.length,
+      wins,
+      losses,
+      breakeven,
+      winRate: decided === 0 ? null : (wins / decided) * 100,
+      averageR: rValues.length === 0 ? null : rValues.reduce((sum, value) => sum + value, 0) / rValues.length,
+    };
+  }, [session]);
 
   async function login(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -219,44 +223,6 @@ export function PortalShell({
     setBusy(false);
   }
 
-  async function checkout(planCode: string, provider: PublicPaymentMethod["code"]) {
-    setBusy(true);
-    setMessage("");
-    try {
-      const response = await fetch("/api/portal/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan_code: planCode, provider }),
-      });
-      const body = await response.json().catch(() => ({}));
-      if (!response.ok || typeof body.authorization_url !== "string") {
-        setMessage(body.error ?? "Checkout is not available yet.");
-        return;
-      }
-      window.location.assign(body.authorization_url);
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function manageSubscription(id: string) {
-    setBusy(true);
-    setMessage("");
-    try {
-      const response = await fetch(`/api/portal/subscriptions/${encodeURIComponent(id)}/manage`, {
-        method: "POST",
-      });
-      const body = await response.json().catch(() => ({}));
-      if (!response.ok || typeof body.url !== "string") {
-        setMessage(body.error ?? "Subscription management is unavailable.");
-        return;
-      }
-      window.location.assign(body.url);
-    } finally {
-      setBusy(false);
-    }
-  }
-
   return (
     <section className="min-h-screen pt-28 pb-20">
       <div className="container-phantom">
@@ -264,10 +230,10 @@ export function PortalShell({
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">CodePhantom Portal</p>
             <h1 className="mt-2 font-display text-3xl font-semibold text-ghost-white md:text-4xl">
-              One account. Every CodePhantom service.
+              One account across Android, iPhone and web.
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-text">
-              Use the same account on the Android app and this installable web app. Purchases and service access are controlled by the CodePhantom backend.
+              Scanner setups, published signals, performance, EA monitoring and account access come from the same CodePhantom backend on every device.
             </p>
           </div>
           <PwaInstallButton />
@@ -280,7 +246,9 @@ export function PortalShell({
         )}
 
         {loading ? (
-          <div className="rounded-2xl border border-metallic-silver/10 bg-surface/50 p-8 text-muted-text">Loading your CodePhantom account…</div>
+          <div className="rounded-2xl border border-metallic-silver/10 bg-surface/50 p-8 text-muted-text">
+            Loading your CodePhantom account…
+          </div>
         ) : !session?.authenticated ? (
           <div className="mx-auto max-w-xl rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7 md:p-9">
             <div className="mb-7 flex rounded-full border border-metallic-silver/10 bg-phantom-black/50 p-1">
@@ -370,9 +338,9 @@ export function PortalShell({
                   <h3 className="font-display text-lg font-semibold text-ghost-white">My services</h3>
                   {entitlements.length === 0 ? (
                     <div className="mt-3 rounded-xl border border-metallic-silver/10 bg-phantom-black/40 p-5">
-                      <p className="font-medium text-ghost-white">No services are enabled on your account yet.</p>
+                      <p className="font-medium text-ghost-white">No client services are enabled on this account yet.</p>
                       <p className="mt-2 text-sm leading-relaxed text-muted-text">
-                        When you purchase or receive access to a CodePhantom service, it will appear here and in the Android app automatically.
+                        Service access is controlled by CodePhantom account entitlements. Payments are not part of this release.
                       </p>
                     </div>
                   ) : (
@@ -418,106 +386,162 @@ export function PortalShell({
                   </div>
                 </dl>
                 <button type="button" onClick={() => void refreshSession()} className="mt-6 rounded-full border border-cyber-blue/30 px-4 py-2 text-sm text-ghost-white hover:bg-cyber-blue/10">
-                  Refresh access
+                  Refresh live data
                 </button>
               </div>
             </div>
 
-            {(session.scanner_setups ?? []).length > 0 && (
-              <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
-                <div className="flex flex-wrap items-end justify-between gap-3">
-                  <div>
-                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Scanner</p>
-                    <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">Reviewed setups</h2>
-                  </div>
-                  <p className="text-sm text-muted-text">Only setups your account is entitled to view are returned by the backend.</p>
+            <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Signals performance</p>
+                  <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">Verified signal outcomes</h2>
                 </div>
+                <p className="text-sm text-muted-text">Calculated only from signals whose outcome is recorded by the backend.</p>
+              </div>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                {[
+                  ["Closed", String(performance.total)],
+                  ["Wins", String(performance.wins)],
+                  ["Losses", String(performance.losses)],
+                  ["Win rate", performance.winRate === null ? "—" : `${performance.winRate.toFixed(1)}%`],
+                  ["Average R", performance.averageR === null ? "—" : `${performance.averageR.toFixed(2)}R`],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-xl border border-metallic-silver/10 bg-surface/60 p-4">
+                    <p className="text-xs text-muted-text">{label}</p>
+                    <p className="mt-2 font-display text-xl font-semibold text-ghost-white">{value}</p>
+                  </div>
+                ))}
+              </div>
+              {performance.breakeven > 0 && (
+                <p className="mt-4 text-xs text-muted-text">{performance.breakeven} breakeven signal{performance.breakeven === 1 ? "" : "s"} recorded separately.</p>
+              )}
+            </div>
+
+            <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">EA Monitor</p>
+                  <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">Live EA accounts</h2>
+                </div>
+                <p className="text-sm text-muted-text">Read-only account and heartbeat data from the CodePhantom backend.</p>
+              </div>
+              {(session.ea_accounts ?? []).length === 0 ? (
+                <div className="mt-6 rounded-xl border border-metallic-silver/10 bg-phantom-black/40 p-5 text-sm text-muted-text">
+                  No EA account is connected to this account yet. This is a real empty state, not demo data.
+                </div>
+              ) : (
+                <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {(session.ea_accounts ?? []).map((account) => {
+                    const heartbeat = account.runtime_status?.last_heartbeat_at;
+                    const online = heartbeat
+                      ? Date.now() - new Date(heartbeat).getTime() < 5 * 60 * 1000
+                      : false;
+                    return (
+                      <article key={account.id} className="rounded-xl border border-metallic-silver/10 bg-surface/60 p-5">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <h3 className="font-display text-lg font-semibold text-ghost-white">{account.account_label ?? account.id}</h3>
+                            <p className="mt-1 text-xs text-muted-text">{account.broker ?? "Broker not reported"}</p>
+                          </div>
+                          <span className="rounded-full border border-metallic-silver/15 px-3 py-1 text-xs text-metallic-silver">
+                            {online ? "ONLINE" : heartbeat ? "OFFLINE" : "WAITING"}
+                          </span>
+                        </div>
+                        <dl className="mt-5 grid grid-cols-2 gap-4 text-sm">
+                          <div><dt className="text-muted-text">Balance</dt><dd className="mt-1 text-ghost-white">{money(account.runtime_status?.balance)}</dd></div>
+                          <div><dt className="text-muted-text">Equity</dt><dd className="mt-1 text-ghost-white">{money(account.runtime_status?.equity)}</dd></div>
+                          <div><dt className="text-muted-text">Daily P/L</dt><dd className="mt-1 text-ghost-white">{money(account.runtime_status?.daily_pl)}</dd></div>
+                          <div><dt className="text-muted-text">Drawdown</dt><dd className="mt-1 text-ghost-white">{pct(account.runtime_status?.drawdown_percentage)}</dd></div>
+                          <div><dt className="text-muted-text">Open trades</dt><dd className="mt-1 text-ghost-white">{account.runtime_status?.open_trades_count ?? 0}</dd></div>
+                          <div><dt className="text-muted-text">Risk</dt><dd className="mt-1 text-ghost-white">{pct(account.risk_percentage)}</dd></div>
+                        </dl>
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Scanner</p>
+                  <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">Live setups</h2>
+                </div>
+                <p className="text-sm text-muted-text">The backend applies the account&apos;s market visibility and review rules.</p>
+              </div>
+              {(session.scanner_setups ?? []).length === 0 ? (
+                <div className="mt-6 rounded-xl border border-metallic-silver/10 bg-phantom-black/40 p-5 text-sm text-muted-text">
+                  No scanner setup is currently available for this account.
+                </div>
+              ) : (
                 <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                   {(session.scanner_setups ?? []).map((setup) => (
                     <article key={setup.id} className="rounded-xl border border-metallic-silver/10 bg-surface/60 p-5">
                       <div className="flex items-center justify-between gap-3">
-                        <h3 className="font-display text-lg font-semibold text-ghost-white">
-                          {setup.symbol} {setup.direction}
-                        </h3>
-                        <span className="rounded-full border border-metallic-silver/15 px-2.5 py-1 text-xs text-metallic-silver">
-                          {setup.timeframe}
-                        </span>
+                        <h3 className="font-display text-lg font-semibold text-ghost-white">{setup.symbol} {setup.direction}</h3>
+                        <span className="rounded-full border border-metallic-silver/15 px-2.5 py-1 text-xs text-metallic-silver">{setup.timeframe}</span>
                       </div>
+                      <p className="mt-2 text-xs text-muted-text">{setup.status}</p>
                       <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                        <div>
-                          <dt className="text-muted-text">Entry</dt>
-                          <dd className="mt-1 text-ghost-white">{String(setup.entry)}</dd>
-                        </div>
-                        <div>
-                          <dt className="text-muted-text">Stop loss</dt>
-                          <dd className="mt-1 text-ghost-white">{String(setup.stop_loss)}</dd>
-                        </div>
+                        <div><dt className="text-muted-text">Entry</dt><dd className="mt-1 text-ghost-white">{String(setup.entry)}</dd></div>
+                        <div><dt className="text-muted-text">Stop loss</dt><dd className="mt-1 text-ghost-white">{String(setup.stop_loss)}</dd></div>
                       </dl>
-                      {setup.take_profits?.length > 0 && (
-                        <p className="mt-4 text-sm text-muted-text">
-                          TP: <span className="text-metallic-silver">{setup.take_profits.map(String).join(" · ")}</span>
-                        </p>
-                      )}
-                      {setup.confluence_max > 0 && (
-                        <p className="mt-3 text-xs text-muted-text">
-                          Confluence {setup.confluence_score}/{setup.confluence_max}
-                        </p>
-                      )}
+                      {setup.take_profits?.length > 0 && <p className="mt-4 text-sm text-muted-text">TP: <span className="text-metallic-silver">{setup.take_profits.map(String).join(" · ")}</span></p>}
+                      {setup.confluence_max > 0 && <p className="mt-3 text-xs text-muted-text">Confluence {setup.confluence_score}/{setup.confluence_max}</p>}
                       <p className="mt-3 text-xs text-muted-text">{new Date(setup.detected_at).toLocaleString()}</p>
                     </article>
                   ))}
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
-            {(session.signals ?? []).length > 0 && (
-              <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Signals</p>
-                  <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">Published signals</h2>
+            <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Signals</p>
+                <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">Published signals</h2>
+              </div>
+              {(session.signals ?? []).length === 0 ? (
+                <div className="mt-6 rounded-xl border border-metallic-silver/10 bg-phantom-black/40 p-5 text-sm text-muted-text">
+                  No published signals yet.
                 </div>
+              ) : (
                 <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                   {(session.signals ?? []).map((signal) => (
                     <article key={signal.id} className="rounded-xl border border-metallic-silver/10 bg-surface/60 p-5">
                       <div className="flex items-center justify-between gap-3">
-                        <h3 className="font-display text-lg font-semibold text-ghost-white">
-                          {signal.symbol} {signal.direction}
-                        </h3>
+                        <h3 className="font-display text-lg font-semibold text-ghost-white">{signal.symbol} {signal.direction}</h3>
                         <span className="rounded-full border border-cyber-blue/25 bg-cyber-blue/5 px-2.5 py-1 text-xs text-metallic-silver">
                           {signal.status.replaceAll("_", " ")}
                         </span>
                       </div>
                       <p className="mt-2 text-xs text-muted-text">{signal.timeframe}</p>
                       <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                        <div>
-                          <dt className="text-muted-text">Entry</dt>
-                          <dd className="mt-1 text-ghost-white">{String(signal.entry)}</dd>
-                        </div>
-                        <div>
-                          <dt className="text-muted-text">Stop loss</dt>
-                          <dd className="mt-1 text-ghost-white">{String(signal.stop_loss)}</dd>
-                        </div>
+                        <div><dt className="text-muted-text">Entry</dt><dd className="mt-1 text-ghost-white">{String(signal.entry)}</dd></div>
+                        <div><dt className="text-muted-text">Stop loss</dt><dd className="mt-1 text-ghost-white">{String(signal.stop_loss)}</dd></div>
                       </dl>
-                      {signal.take_profits?.length > 0 && (
-                        <p className="mt-4 text-sm text-muted-text">
-                          TP: <span className="text-metallic-silver">{signal.take_profits.map(String).join(" · ")}</span>
+                      {signal.take_profits?.length > 0 && <p className="mt-4 text-sm text-muted-text">TP: <span className="text-metallic-silver">{signal.take_profits.map(String).join(" · ")}</span></p>}
+                      {signal.result && signal.result !== "PENDING" && (
+                        <p className="mt-4 text-sm text-metallic-silver">
+                          Result: {signal.result}{num(signal.r_multiple) !== null ? ` · ${num(signal.r_multiple)!.toFixed(2)}R` : ""}
                         </p>
                       )}
-                      <p className="mt-3 text-xs text-muted-text">
-                        {new Date(signal.published_at ?? signal.created_at).toLocaleString()}
-                      </p>
+                      <p className="mt-3 text-xs text-muted-text">{new Date(signal.published_at ?? signal.created_at).toLocaleString()}</p>
                     </article>
                   ))}
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
-            {(session.notifications ?? []).length > 0 && (
-              <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Updates</p>
-                  <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">Notifications & announcements</h2>
-                </div>
+            <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Updates</p>
+                <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">Notifications</h2>
+              </div>
+              {(session.notifications ?? []).length === 0 ? (
+                <p className="mt-5 text-sm text-muted-text">No notifications yet.</p>
+              ) : (
                 <div className="mt-5 space-y-3">
                   {(session.notifications ?? []).map((notification) => (
                     <article
@@ -531,133 +555,6 @@ export function PortalShell({
                       {notification.body && <p className="mt-2 text-sm leading-relaxed text-muted-text">{notification.body}</p>}
                     </article>
                   ))}
-                </div>
-              </div>
-            )}
-
-            <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
-              <div className="flex flex-wrap items-end justify-between gap-3">
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Store</p>
-                  <h2 className="mt-2 font-display text-2xl font-semibold text-ghost-white">CodePhantom services</h2>
-                </div>
-                <p className="max-w-xl text-sm text-muted-text">Only plans enabled and published by the CodePhantom backend appear here.</p>
-              </div>
-
-              {plans.length === 0 ? (
-                <div className="mt-6 rounded-xl border border-metallic-silver/10 bg-phantom-black/40 p-5 text-sm text-muted-text">
-                  No services are on sale yet. The store will populate automatically when plans are published.
-                </div>
-              ) : (
-                <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                  {plans.map((plan) => (
-                    <article key={plan.code} className="rounded-xl border border-metallic-silver/10 bg-surface/60 p-5">
-                      <h3 className="font-display text-lg font-semibold text-ghost-white">{plan.name}</h3>
-                      <p className="mt-4 text-2xl font-semibold text-ghost-white">{price(plan)}</p>
-                      <p className="mt-1 text-xs text-muted-text">{billingLabel(plan)}</p>
-                      {plan.trialEligible && plan.trialDays ? (
-                        <p className="mt-3 text-xs text-cyber-blue">{plan.trialDays}-day trial available</p>
-                      ) : null}
-                      <div className="mt-5 space-y-2">
-                        {paymentMethods
-                          .filter((method) => plan.billingType !== "SUBSCRIPTION" || method.recurring)
-                          .map((method, index) => (
-                            <button
-                              key={method.code}
-                              type="button"
-                              disabled={busy || plan.priceAmountMinor === null}
-                              onClick={() => void checkout(plan.code, method.code)}
-                              className={
-                                index === 0
-                                  ? "w-full rounded-full bg-phantom-gradient px-5 py-2.5 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-40"
-                                  : "w-full rounded-full border border-metallic-silver/15 bg-phantom-black/40 px-5 py-2.5 text-sm font-medium text-ghost-white transition hover:border-cyber-blue/40 hover:bg-cyber-blue/5 disabled:cursor-not-allowed disabled:opacity-40"
-                              }
-                            >
-                              {plan.billingType === "SUBSCRIPTION" ? `Subscribe with ${method.name}` : `Pay with ${method.name}`}
-                            </button>
-                          ))}
-                        {paymentMethods.filter((method) => plan.billingType !== "SUBSCRIPTION" || method.recurring).length === 0 && (
-                          <p className="rounded-xl border border-metallic-silver/10 bg-phantom-black/40 p-3 text-center text-xs text-muted-text">
-                            Checkout is not enabled for this plan yet.
-                          </p>
-                        )}
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {(session.subscriptions ?? []).length > 0 && (
-              <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
-                <div className="flex flex-wrap items-end justify-between gap-3">
-                  <div>
-                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyber-blue">Billing</p>
-                    <h2 className="mt-2 font-display text-xl font-semibold text-ghost-white">Subscriptions</h2>
-                  </div>
-                  <p className="text-sm text-muted-text">Manage payment method or cancellation through Paystack&apos;s secure hosted page.</p>
-                </div>
-                <div className="mt-5 grid gap-4 md:grid-cols-2">
-                  {(session.subscriptions ?? []).map((subscription) => (
-                    <article key={subscription.id} className="rounded-xl border border-metallic-silver/10 bg-surface/60 p-5">
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <h3 className="font-display text-lg font-semibold text-ghost-white">{subscription.plan_code}</h3>
-                          <p className="mt-1 text-xs text-muted-text">{subscription.provider}</p>
-                        </div>
-                        <span className="rounded-full border border-metallic-silver/15 px-3 py-1 text-xs text-metallic-silver">
-                          {subscription.status.replaceAll("_", " ")}
-                        </span>
-                      </div>
-                      {subscription.next_payment_at && subscription.status === "ACTIVE" ? (
-                        <p className="mt-4 text-sm text-muted-text">
-                          Next payment: {new Date(subscription.next_payment_at).toLocaleDateString()}
-                        </p>
-                      ) : subscription.current_period_end ? (
-                        <p className="mt-4 text-sm text-muted-text">
-                          Access through: {new Date(subscription.current_period_end).toLocaleDateString()}
-                        </p>
-                      ) : null}
-                      <button
-                        type="button"
-                        disabled={busy}
-                        onClick={() => void manageSubscription(subscription.id)}
-                        className="mt-5 rounded-full border border-cyber-blue/30 px-4 py-2 text-sm text-ghost-white hover:bg-cyber-blue/10 disabled:opacity-50"
-                      >
-                        Manage subscription
-                      </button>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-7">
-              <h2 className="font-display text-xl font-semibold text-ghost-white">Purchase history</h2>
-              {(session.purchases ?? []).length === 0 ? (
-                <p className="mt-3 text-sm text-muted-text">No purchases yet.</p>
-              ) : (
-                <div className="mt-4 overflow-x-auto">
-                  <table className="w-full min-w-[620px] text-left text-sm">
-                    <thead className="text-muted-text">
-                      <tr>
-                        <th className="pb-3 pr-5 font-medium">Plan</th>
-                        <th className="pb-3 pr-5 font-medium">Status</th>
-                        <th className="pb-3 pr-5 font-medium">Provider</th>
-                        <th className="pb-3 font-medium">Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {(session.purchases ?? []).map((purchase) => (
-                        <tr key={purchase.id} className="border-t border-metallic-silver/10">
-                          <td className="py-3 pr-5 text-ghost-white">{purchase.plan_code}</td>
-                          <td className="py-3 pr-5 text-metallic-silver">{purchase.status}</td>
-                          <td className="py-3 pr-5 text-metallic-silver">{purchase.provider}</td>
-                          <td className="py-3 text-muted-text">{new Date(purchase.created_at).toLocaleDateString()}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
                 </div>
               )}
             </div>
