@@ -9,18 +9,35 @@ import {
   refreshBackendSession,
 } from "@/lib/portal-server";
 
+async function loadEa(accessToken: string) {
+  const headers = { Authorization: `Bearer ${accessToken}` };
+  const accountsResponse = await backendFetch("/ea/accounts?limit=50", { headers });
+  if (!accountsResponse.ok) return [];
+  const accountsBody = await accountsResponse.json().catch(() => ({}));
+  const accounts = Array.isArray(accountsBody.data) ? accountsBody.data : [];
+
+  return Promise.all(
+    accounts.map(async (account: Record<string, unknown>) => {
+      const id = typeof account.id === "string" ? account.id : "";
+      if (!id) return { ...account, runtime_status: null };
+      const statusResponse = await backendFetch(`/ea/accounts/${encodeURIComponent(id)}/status`, { headers });
+      const statusBody = statusResponse.ok ? await statusResponse.json().catch(() => ({})) : {};
+      return { ...account, runtime_status: statusBody.data ?? null };
+    }),
+  );
+}
+
 async function load(accessToken: string) {
   const headers = { Authorization: `Bearer ${accessToken}` };
-  const [me, access, purchases, subscriptions, scanner, signals, notifications] = await Promise.all([
+  const [me, access, scanner, signals, notifications, eaAccounts] = await Promise.all([
     backendFetch("/me", { headers }),
     backendFetch("/me/access", { headers }),
-    backendFetch("/commerce/purchases", { headers }),
-    backendFetch("/commerce/subscriptions", { headers }),
-    backendFetch("/scanner/setups?limit=20", { headers }),
-    backendFetch("/signals?limit=20", { headers }),
-    backendFetch("/notifications?limit=20", { headers }),
+    backendFetch("/scanner/setups?limit=50", { headers }),
+    backendFetch("/signals?limit=200", { headers }),
+    backendFetch("/notifications?limit=50", { headers }),
+    loadEa(accessToken),
   ]);
-  return { me, access, purchases, subscriptions, scanner, signals, notifications };
+  return { me, access, scanner, signals, notifications, eaAccounts };
 }
 
 export async function GET() {
@@ -54,11 +71,9 @@ export async function GET() {
     return response;
   }
 
-  const [meBody, accessBody, purchasesBody, subscriptionsBody, scannerBody, signalsBody, notificationsBody] = await Promise.all([
+  const [meBody, accessBody, scannerBody, signalsBody, notificationsBody] = await Promise.all([
     loaded.me.json().catch(() => ({})),
     loaded.access.ok ? loaded.access.json().catch(() => ({})) : Promise.resolve({}),
-    loaded.purchases.ok ? loaded.purchases.json().catch(() => ({})) : Promise.resolve({}),
-    loaded.subscriptions.ok ? loaded.subscriptions.json().catch(() => ({})) : Promise.resolve({}),
     loaded.scanner.ok ? loaded.scanner.json().catch(() => ({})) : Promise.resolve({}),
     loaded.signals.ok ? loaded.signals.json().catch(() => ({})) : Promise.resolve({}),
     loaded.notifications.ok ? loaded.notifications.json().catch(() => ({})) : Promise.resolve({}),
@@ -68,11 +83,10 @@ export async function GET() {
     authenticated: true,
     me: meBody.data ?? null,
     access: accessBody.data ?? null,
-    purchases: purchasesBody.data ?? [],
-    subscriptions: subscriptionsBody.data ?? [],
     scanner_setups: scannerBody.data ?? [],
     signals: signalsBody.data ?? [],
     notifications: notificationsBody.data ?? [],
+    ea_accounts: loaded.eaAccounts,
   });
   if (refreshed) {
     response.cookies.set(ACCESS_COOKIE, refreshed.accessToken, cookieOptions(refreshed.expiresIn));
