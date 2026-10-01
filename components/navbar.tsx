@@ -64,11 +64,11 @@ export function Navbar() {
         </ul>
 
         <div className="hidden lg:flex items-center gap-3">
-          <Button href="/contact" variant="ghost">
-            Get in Touch
+          <Button href="/download">
+            Get the App
           </Button>
           <Button href="/app" variant="secondary">
-            Open CodePhantom
+            Open Web App
           </Button>
         </div>
 
@@ -100,11 +100,11 @@ export function Navbar() {
               </li>
             ))}
             <li className="pt-4 flex flex-col gap-3">
-              <Button href="/app" variant="primary" className="w-full">
-                Open CodePhantom
+              <Button href="/download" variant="primary" className="w-full">
+                Get the App / Download
               </Button>
-              <Button href="/contact" variant="secondary" className="w-full">
-                Get in Touch
+              <Button href="/app" variant="secondary" className="w-full">
+                Open Web App
               </Button>
             </li>
           </ul>
