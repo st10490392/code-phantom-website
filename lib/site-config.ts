@@ -24,6 +24,29 @@ export const siteUrl =
     ? configuredSiteUrl.replace(/\/$/, "")
     : "http://localhost:3000";
 
+
+/**
+ * Hosted Flutter web/PWA entry point. This is the full CodePhantom app used
+ * by browser, desktop and Apple users. The environment variable lets the
+ * host move later without changing links across the site; the current
+ * Railway staging host is the temporary family/beta release fallback.
+ */
+const configuredWebAppUrl = process.env.NEXT_PUBLIC_CODEPHANTOM_APP_URL?.trim();
+function validWebAppUrl(raw: string | undefined): string | null {
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    if (url.protocol !== "https:" || url.username || url.password) return null;
+    return url.toString().replace(/\/$/, "");
+  } catch {
+    return null;
+  }
+}
+
+export const webAppUrl =
+  validWebAppUrl(configuredWebAppUrl) ??
+  "https://code-phantom-web-staging.up.railway.app";
+
 export const siteConfig = {
   name: company.brand.name,
   shortName: company.brand.shortName,
