@@ -72,11 +72,11 @@ export default function HomePage() {
 
             <Reveal delay={240}>
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <Button href="/projects" icon={<ArrowRightIcon className="h-4 w-4" />}>
-                  Explore Our Work
+                <Button href="/download" icon={<ArrowRightIcon className="h-4 w-4" />}>
+                  Get CodePhantom
                 </Button>
-                <Button href="/capabilities" variant="secondary">
-                  Our Capabilities
+                <Button href="/app" variant="secondary">
+                  Open Web App
                 </Button>
               </div>
             </Reveal>
