@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { PortalShell } from "@/components/portal/portal-shell";
+import { redirect } from "next/navigation";
+import { webAppUrl } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "CodePhantom Portal",
-  description: "Sign in to your CodePhantom account for Scanner, Signals, EA monitoring and updates across web and mobile.",
+  title: "CodePhantom App",
+  description: "Open the full CodePhantom app for Scanner, Signals and account access across web, desktop and Apple devices.",
   alternates: { canonical: "/app" },
 };
 
-export default function PortalPage() {
-  return <PortalShell />;
+export default function AppPage() {
+  redirect(webAppUrl);
 }
