@@ -98,3 +98,9 @@ See [`docs/OPERATIONS.md`](docs/OPERATIONS.md) for environment variables,
 SEO/structured data, the WhatsApp community link and the moderated
 testimonial pipeline.
 
+
+## Engineering portfolio
+
+For a recruiter-safe overview of the wider CodePhantom engineering work — including the private Flutter app, TypeScript/Supabase backend, Python/MT5 research framework and remote-EA architecture — see [`docs/ENGINEERING_PORTFOLIO.md`](docs/ENGINEERING_PORTFOLIO.md).
+
+A ready-to-use GitHub profile README is also kept at [`docs/GITHUB_PROFILE_README.md`](docs/GITHUB_PROFILE_README.md). The actual profile repository still needs to be created as `st10490392/st10490392` before GitHub will render it on the account profile.
