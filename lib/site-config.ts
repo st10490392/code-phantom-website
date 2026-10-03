@@ -176,6 +176,7 @@ export const primaryNav = [
   { label: "Capabilities", href: "/capabilities" },
   { label: "Divisions", href: "/divisions" },
   { label: "Products", href: "/products" },
+  { label: "Shop", href: "/shop" },
   { label: "Projects", href: "/projects" },
   { label: "Insights", href: "/insights" },
   { label: "Founder", href: "/founder" },
