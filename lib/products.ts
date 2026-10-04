@@ -79,7 +79,7 @@ export const products: Product[] = [
   },
   {
     slug: "codephantom-ea",
-    name: "Code Phantom EA",
+    name: "CPT GILGAMESH EA",
     summary: "Phantom Traders' automated-trading research engine.",
     readiness: "Research / Development",
     readinessNote: "Research and backtesting only. It is not offered to clients and does not trade.",
@@ -88,14 +88,15 @@ export const products: Product[] = [
       "In its current form it has no broker connection and no order-execution capability. An optional status bridge can report an instance's health to the CodePhantom platform; it is switched off by default and cannot place trades.",
     ],
     highlights: [
-      "Deterministic, causal research engine",
-      "Offline backtesting - no network or licence server required",
-      "No live execution",
+      "Layered multi-strategy orchestration with proprietary strategy logic kept private",
+      "Instrument, conflict and portfolio-risk safety gates",
+      "Auditable research with controlled shadow/demo validation",
+      "Real and funded execution remain disabled during development",
     ],
     notes: [
-      "The EA is not proven or profitable, and no performance results are published. Any future release would follow testing and a compliance review.",
+      "No proprietary strategy rules, parameters, instrument mappings, backtest performance or internal decision thresholds are published. Any future public release will follow validation, operational-safety and compliance review.",
     ],
-    platforms: ["Research environment"],
+    platforms: ["MT5 research / shadow / demo environment"],
   },
 ];
 
