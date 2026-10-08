@@ -84,7 +84,7 @@ export const socials = {
   linkedin: null as string | null,
   instagram: null as string | null,
   whatsapp: null as string | null,
-  email: null as string | null,
+  email: "gingercodePhantom@proton.me" as string | null,
 } as const;
 
 export type SocialKey = keyof typeof socials;
@@ -105,7 +105,7 @@ export const hasAnyContactChannel = Object.values(socials).some(
 export const founderSocials = {
   github: "https://github.com/st10490392",
   linkedin: "https://www.linkedin.com/in/ripfumelo-ngobeni-753545389",
-  instagram: "https://www.instagram.com/gingercodephantom",
+  instagram: null as string | null,
 } as const;
 
 /**
