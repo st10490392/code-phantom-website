@@ -5,7 +5,6 @@ import { socials, founderSocials } from "@/lib/site-config";
 import {
   GitHubIcon,
   LinkedInIcon,
-  InstagramIcon,
   WhatsAppIcon,
   MailIcon,
   ArrowRightIcon,
@@ -35,20 +34,6 @@ const channelDefs = [
     href: socials.linkedin,
   },
   {
-    key: "instagram",
-    label: "Instagram",
-    description: "Follow along with CodePhantom updates.",
-    icon: InstagramIcon,
-    href: socials.instagram,
-  },
-  {
-    key: "whatsapp",
-    label: "WhatsApp",
-    description: "Message CodePhantom directly.",
-    icon: WhatsAppIcon,
-    href: socials.whatsapp ? `https://wa.me/${socials.whatsapp}` : null,
-  },
-  {
     key: "email",
     label: "Email",
     description: "Send CodePhantom an email.",
@@ -69,12 +54,6 @@ const founderChannelDefs = [
     label: "LinkedIn",
     icon: LinkedInIcon,
     href: founderSocials.linkedin,
-  },
-  {
-    key: "founder-instagram",
-    label: "Instagram",
-    icon: InstagramIcon,
-    href: founderSocials.instagram,
   },
 ] as const;
 
@@ -132,9 +111,8 @@ export default function ContactPage() {
         <Reveal delay={active.length * 80 + 80}>
           <div className="mx-auto mt-14 max-w-2xl rounded-2xl border border-metallic-silver/10 bg-midnight-navy/50 p-8 text-center">
             <p className="text-sm leading-relaxed text-muted-text">
-              More contact channels — including a company email and
-              additional social profiles — will be added here as they are
-              confirmed. CodePhantom does not publish placeholder or
+              Additional official contact channels will be added when
+              they are established and verified. CodePhantom does not publish placeholder or
               unconfirmed contact details.
             </p>
           </div>
@@ -160,9 +138,7 @@ export default function ContactPage() {
               ))}
             </div>
             <p className="mt-6 text-center text-xs leading-relaxed text-muted-text">
-              These are GingerCodePhantom&rsquo;s (Ripfumelo Ngobeni&rsquo;s) personal founder channels —
-              Instagram in particular is his personal/professional account,
-              not an official CodePhantom Technologies channel.
+              These are the founder&rsquo;s professional profiles, not official company support channels.
             </p>
           </div>
         </Reveal>
