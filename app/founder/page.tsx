@@ -3,7 +3,7 @@ import { Section, SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
 import { founder } from "@/lib/founder";
-import { ArrowRightIcon, GitHubIcon, LinkedInIcon, InstagramIcon } from "@/components/icons";
+import { ArrowRightIcon, GitHubIcon, LinkedInIcon } from "@/components/icons";
 import { founderSocials } from "@/lib/site-config";
 import { NetworkBackground } from "@/components/network-background";
 import { FounderJsonLd } from "@/components/structured-data";
@@ -142,20 +142,7 @@ export default function FounderPage() {
                     <LinkedInIcon className="h-4 w-4 flex-shrink-0" />
                     LinkedIn
                   </a>
-                  <a
-                    href={founderSocials.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-sm text-metallic-silver transition-colors hover:text-ghost-white"
-                  >
-                    <InstagramIcon className="h-4 w-4 flex-shrink-0" />
-                    Instagram
-                  </a>
                 </div>
-                <p className="mt-4 text-xs leading-relaxed text-muted-text">
-                  Instagram is GingerCodePhantom&rsquo;s personal/professional
-                  account, not an official CodePhantom Technologies channel.
-                </p>
               </div>
             </div>
           </Reveal>
