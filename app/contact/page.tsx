@@ -5,7 +5,6 @@ import { socials, founderSocials } from "@/lib/site-config";
 import {
   GitHubIcon,
   LinkedInIcon,
-  WhatsAppIcon,
   MailIcon,
   ArrowRightIcon,
 } from "@/components/icons";
