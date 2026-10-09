@@ -1,0 +1,7 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { socials } from "@/lib/site-config";
+export const metadata: Metadata = { title: "Project inquiry" };
+export default function InquiryPage() {
+  return <div className="container-phantom pt-36 pb-24 max-w-3xl"><h1 className="text-4xl text-ghost-white">Tell us what you need to build.</h1><p className="mt-6 text-muted-text">Use the official contact channel to request a quotation. Include your name or business, contact email, requested service and a short project description. Budget range and target deadline are optional. Please confirm that CodePhantom may reply about your inquiry.</p><p className="mt-6 text-muted-text">Do not send trading-account passwords, API secrets, payment-card details or confidential datasets. A quotation follows a scope discussion; no delivery date or price is guaranteed here.</p>{socials.email && <a className="mt-8 inline-block text-cyber-blue underline" href={`mailto:${socials.email}?subject=CodePhantom%20project%20inquiry`}>Prepare an inquiry email</a>}<p className="mt-6 text-sm text-muted-text">This page does not collect or store form data. Your email provider handles the message when you choose to send it. A backend inquiry form is planned after retention, access controls and privacy wording are approved.</p><Link className="mt-8 block text-cyber-blue underline" href="/contact">All official contact channels</Link></div>;
+}

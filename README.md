@@ -5,7 +5,7 @@ _Engineering Intelligent Systems._
 
 ## Stack
 
-- [Next.js 14](https://nextjs.org/) (App Router) + TypeScript
+- [Next.js 15](https://nextjs.org/) (App Router) + TypeScript
 - [Tailwind CSS](https://tailwindcss.com/)
 - No external UI/animation dependencies — motion is CSS + a small
   `IntersectionObserver`-based `Reveal` component

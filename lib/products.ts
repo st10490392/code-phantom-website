@@ -1,3 +1,4 @@
+import { androidRelease } from "./releases";
 /**
  * Product catalog content for /products.
  *
@@ -28,6 +29,11 @@ export type Product = {
   highlights: string[];
   notes?: string[];
   platforms: string[];
+  documentationUrl?: string;
+  registrationUrl?: string;
+  downloadUrl?: string;
+  supportUrl?: string;
+  licenceRequirements?: string;
 };
 
 export const products: Product[] = [
@@ -58,9 +64,9 @@ export const products: Product[] = [
   {
     slug: "codephantom-app",
     name: "CodePhantom App",
-    summary: "The Android app for CodePhantom accounts: reviewed Scanner setups, notifications and account security.",
+    summary: "The Android and web/PWA client for CodePhantom accounts, entitled features and account security.",
     readiness: "Private development",
-    readinessNote: "The app is in development. There is no public release yet.",
+    readinessNote: "An Android family/beta build is listed on Download. Web/PWA uses the configured staging service; newer FCM changes still need runtime and physical-device acceptance.",
     description: [
       "The CodePhantom App is where account holders will see the Scanner markets they are entitled to, receive notifications and manage their account and devices.",
       "Each account has one core licence, activated once with a one-time activation key. Upgrades are added to the same licence - you never need a second key.",
@@ -75,7 +81,11 @@ export const products: Product[] = [
     notes: [
       "Android first. When a release is published it will appear on the Download page with its SHA-256 checksum.",
     ],
-    platforms: ["Android"],
+    platforms: ["Android (family/beta)", "Web/PWA (configured staging service)"],
+    documentationUrl: "/products/codephantom-app",
+    downloadUrl: androidRelease()?.url,
+    supportUrl: "/support",
+    licenceRequirements: "An account and appropriate server-granted licence and market entitlements are required for protected features.",
   },
   {
     slug: "codephantom-ea",
