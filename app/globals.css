@@ -160,3 +160,61 @@ select:focus-visible,
 ::-webkit-scrollbar-thumb:hover {
   background: #7c3aed;
 }
+
+
+/* Ambient background: transform/opacity only; no JS or layout reflow. */
+.ambient-haze {
+  position: absolute;
+  width: 45%;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  filter: blur(65px);
+  opacity: .22;
+  will-change: transform;
+  animation: ambient-drift 24s ease-in-out infinite alternate;
+}
+.ambient-haze-one {
+  top: 0;
+  left: -12%;
+  background: radial-gradient(circle, rgba(124,58,237,.65), transparent 70%);
+}
+.ambient-haze-two {
+  bottom: -20%;
+  right: -12%;
+  background: radial-gradient(circle, rgba(22,139,255,.55), transparent 70%);
+  animation-delay: -12s;
+  animation-duration: 30s;
+}
+.ambient-network { animation: ambient-breathe 11s ease-in-out infinite alternate; }
+.ambient-orbit {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ambient-rotate 75s linear infinite;
+}
+.ambient-particle { opacity: .45; animation: ambient-float 9s ease-in-out infinite alternate; }
+.ambient-particle-1 { animation-delay: -2s; animation-duration: 12s; }
+.ambient-particle-2 { animation-delay: -5s; animation-duration: 14s; }
+.ambient-particle-3 { animation-delay: -7s; animation-duration: 11s; }
+.ambient-geometry { animation: ambient-breathe 16s ease-in-out infinite alternate; }
+.ambient-node-glow { animation: ambient-breathe 8s ease-in-out infinite alternate; }
+@keyframes ambient-float {
+  from { transform: translate3d(0, 8px, 0); opacity: .22; }
+  to { transform: translate3d(9px, -13px, 0); opacity: .75; }
+}
+@keyframes ambient-drift {
+  from { transform: translate3d(-3%, 2%, 0); }
+  to { transform: translate3d(10%, -8%, 0); }
+}
+@keyframes ambient-rotate { to { rotate: 360deg; } }
+@keyframes ambient-breathe { from { opacity: .35; } to { opacity: .85; } }
+@media (max-width: 640px) {
+  .ambient-haze { filter: blur(45px); opacity: .13; }
+  .ambient-orbit { opacity: .4; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient-haze, .ambient-network, .ambient-orbit, .ambient-particle,
+  .ambient-geometry, .ambient-node-glow {
+    animation: none !important;
+    will-change: auto;
+  }
+}
