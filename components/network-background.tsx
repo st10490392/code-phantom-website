@@ -1,57 +1,55 @@
 /**
- * Abstract network/circuit motif used as a decorative background layer.
- * Purely presentational (aria-hidden), no imagery, respects
- * prefers-reduced-motion via the shared .animate-* / pulse utilities.
+ * Lightweight ambient network backdrop shared by home and inner-page heroes.
+ * SVG + CSS only: no canvas, animation dependency, timers or pointer tracking.
+ * Decorative only, with reduced-motion support in globals.css.
  */
-export function NetworkBackground({ className }: { className?: string }) {
+const particles = [
+  [95, 92, 3, 0], [265, 170, 2, 1], [475, 90, 3, 2], [770, 155, 2, 3],
+  [1080, 105, 3, 1], [150, 385, 2, 2], [335, 465, 3, 0], [610, 365, 2, 3],
+  [850, 445, 3, 1], [1100, 590, 2, 2], [200, 690, 2, 3], [710, 690, 3, 0],
+] as const;
+
+export function NetworkBackground({ className = "" }: { className?: string }) {
   return (
-    <div className={className} aria-hidden="true">
-      <svg
-        viewBox="0 0 1200 800"
-        className="h-full w-full opacity-60"
-        preserveAspectRatio="xMidYMid slice"
-      >
+    <div className={`pointer-events-none select-none overflow-hidden ${className}`} aria-hidden="true">
+      <div className="ambient-haze ambient-haze-one" />
+      <div className="ambient-haze ambient-haze-two" />
+      <svg viewBox="0 0 1200 800" className="absolute inset-0 h-full w-full opacity-80" preserveAspectRatio="xMidYMid slice" focusable="false">
         <defs>
-          <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#00BFFF" stopOpacity="0.15" />
+          <linearGradient id="cp-ambient-lines" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#7C3AED" stopOpacity=".38" />
+            <stop offset="100%" stopColor="#00BFFF" stopOpacity=".12" />
           </linearGradient>
-          <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#168BFF" stopOpacity="0.9" />
+          <radialGradient id="cp-ambient-node">
+            <stop offset="0%" stopColor="#168BFF" stopOpacity=".55" />
             <stop offset="100%" stopColor="#168BFF" stopOpacity="0" />
           </radialGradient>
         </defs>
-
-        <g stroke="url(#lineGrad)" strokeWidth="1">
-          <line x1="120" y1="140" x2="380" y2="260" />
-          <line x1="380" y1="260" x2="640" y2="120" />
-          <line x1="640" y1="120" x2="920" y2="220" />
-          <line x1="380" y1="260" x2="420" y2="520" />
-          <line x1="420" y1="520" x2="180" y2="620" />
-          <line x1="420" y1="520" x2="700" y2="600" />
-          <line x1="700" y1="600" x2="920" y2="220" />
-          <line x1="700" y1="600" x2="980" y2="680" />
-          <line x1="920" y1="220" x2="1080" y2="360" />
+        <g className="ambient-network" fill="none" stroke="url(#cp-ambient-lines)" strokeWidth="1">
+          <path d="M120 140 380 260 640 120 920 220 1080 360 M380 260 420 520 180 620 M420 520 700 600 920 220 M700 600 980 680" />
+          <path d="M95 92 265 170 475 90 770 155 1080 105 M150 385 335 465 610 365 850 445 1100 590" strokeDasharray="3 14" opacity=".4" />
         </g>
-
+        <g className="ambient-orbit" transform="translate(940 390)" fill="none" stroke="#168BFF" strokeWidth="1">
+          <circle r="155" strokeOpacity=".16" strokeDasharray="4 15" />
+          <circle r="106" stroke="#7C3AED" strokeOpacity=".24" strokeDasharray="80 45 12 40" />
+          <ellipse rx="188" ry="70" transform="rotate(-28)" strokeOpacity=".12" />
+          <circle cx="106" r="4" fill="#00BFFF" stroke="none" fillOpacity=".7" />
+        </g>
         <g fill="#C9CDD5">
-          {[
-            [120, 140],
-            [380, 260],
-            [640, 120],
-            [920, 220],
-            [420, 520],
-            [180, 620],
-            [700, 600],
-            [980, 680],
-            [1080, 360],
-          ].map(([cx, cy], i) => (
-            <circle key={i} cx={cx} cy={cy} r={i % 3 === 0 ? 4 : 2.5} fillOpacity={0.7} />
+          {([[120,140],[380,260],[640,120],[920,220],[420,520],[180,620],[700,600],[980,680],[1080,360]] as const).map(([cx,cy],i) => (
+            <circle key={i} cx={cx} cy={cy} r={i % 3 === 0 ? 3.5 : 2} fillOpacity=".5" />
           ))}
         </g>
-
-        <circle cx="640" cy="120" r="60" fill="url(#nodeGlow)" className="animate-pulse-slow" />
-        <circle cx="420" cy="520" r="80" fill="url(#nodeGlow)" className="animate-pulse-slow" />
+        <circle cx="640" cy="120" r="75" fill="url(#cp-ambient-node)" className="ambient-node-glow" />
+        <circle cx="420" cy="520" r="95" fill="url(#cp-ambient-node)" className="ambient-node-glow" />
+        {particles.map(([cx,cy,r,delay],i) => (
+          <circle key={i} cx={cx} cy={cy} r={r} fill={i % 2 ? "#00BFFF" : "#A78BFA"} className={`ambient-particle ambient-particle-${delay}`} />
+        ))}
+        <g fill="none" stroke="#A78BFA" strokeOpacity=".17" strokeWidth="1.5" className="ambient-geometry">
+          <path d="m185 265 18-10 18 10v21l-18 10-18-10z" />
+          <path d="m1030 140 25-14 25 14v28l-25 14-25-14z" />
+          <path d="m535 680 20-12 20 12v24l-20 12-20-12z" />
+        </g>
       </svg>
     </div>
   );
