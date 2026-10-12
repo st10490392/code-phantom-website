@@ -8,6 +8,7 @@ import { OrganizationJsonLd } from "@/components/structured-data";
 import { siteConfig } from "@/lib/site-config";
 import { founderDisplayName } from "@/lib/company";
 import { PwaRegister } from "@/components/pwa-register";
+import { FloatingActions } from "@/components/floating-actions";
 
 const displayFont = Space_Grotesk({
   subsets: ["latin"],
@@ -95,6 +96,7 @@ export default function RootLayout({
         <Navbar />
         <main id="main-content">{children}</main>
         <Footer />
+        <FloatingActions />
         <PhantomAssistant />
       </body>
     </html>
