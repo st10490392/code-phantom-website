@@ -1,8 +1,10 @@
 /**
  * Lightweight ambient network backdrop shared by home and inner-page heroes.
- * SVG + CSS only: no canvas, animation dependency, timers or pointer tracking.
+ * SVG + CSS motifs layered with a lightweight continuous Canvas particle field.
  * Decorative only, with reduced-motion support in globals.css.
  */
+import { ParticleField } from "./particle-field";
+
 const particles = [
   [95, 92, 3, 0], [265, 170, 2, 1], [475, 90, 3, 2], [770, 155, 2, 3],
   [1080, 105, 3, 1], [150, 385, 2, 2], [335, 465, 3, 0], [610, 365, 2, 3],
@@ -14,6 +16,7 @@ export function NetworkBackground({ className = "" }: { className?: string }) {
     <div className={`pointer-events-none select-none overflow-hidden ${className}`} aria-hidden="true">
       <div className="ambient-haze ambient-haze-one" />
       <div className="ambient-haze ambient-haze-two" />
+      <ParticleField />
       <svg viewBox="0 0 1200 800" className="absolute inset-0 h-full w-full opacity-80" preserveAspectRatio="xMidYMid slice" focusable="false">
         <defs>
           <linearGradient id="cp-ambient-lines" x1="0" y1="0" x2="1" y2="1">
