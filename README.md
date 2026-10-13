@@ -104,3 +104,9 @@ testimonial pipeline.
 For a recruiter-safe overview of the wider CodePhantom engineering work — including the private Flutter app, TypeScript/Supabase backend, Python/MT5 research framework and remote-EA architecture — see [`docs/ENGINEERING_PORTFOLIO.md`](docs/ENGINEERING_PORTFOLIO.md).
 
 A ready-to-use GitHub profile README is also kept at [`docs/GITHUB_PROFILE_README.md`](docs/GITHUB_PROFILE_README.md). The actual profile repository still needs to be created as `st10490392/st10490392` before GitHub will render it on the account profile.
+
+---
+
+## Project status update — 13 October 2026
+
+The CodePhantom Technologies company site is the public information, branding and contact surface; it is not an automatic checkout or APK delivery guarantee. Mobile staging and quant research are tracked separately. Keep founder privacy and secrets out of public documentation; see the [app](https://github.com/st10490392/code-phantom-App), [backend](https://github.com/st10490392/code-phantom-backend) and [scanner](https://github.com/st10490392/CPT-Scanner) repositories for current engineering milestones.
