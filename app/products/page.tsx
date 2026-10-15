@@ -8,7 +8,7 @@ import { products, tradingRiskNotice } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "Products",
-  description: "CodePhantom products and their current readiness: CPT Scanner, the CodePhantom App and Code Phantom EA.",
+  description: "CodePhantom products and their current readiness: CPT Scanner, the CodePhantom App and CPT GILGAMESH EA.",
   alternates: { canonical: "/products" },
 };
 
