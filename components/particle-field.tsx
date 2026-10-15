@@ -19,6 +19,7 @@ export function ParticleField() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const compact = window.matchMedia("(max-width: 640px)");
     let width = 0, height = 0, frame = 0, last = 0, previous = 0;
+    let pixelRatio = 0;
     let particles: Particle[] = [];
     let visible = !document.hidden;
     let inView = true;
@@ -27,19 +28,22 @@ export function ParticleField() {
 
     const resize = () => {
       const bounds = parent.getBoundingClientRect();
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      // Ignore ResizeObserver callbacks when geometry is unchanged; do not respawn particles.
+      if (Math.abs(width - bounds.width) < 1 && Math.abs(height - bounds.height) < 1 && pixelRatio === ratio) return;
       width = Math.max(1, bounds.width);
       height = Math.max(1, bounds.height);
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      pixelRatio = ratio;
       canvas.width = Math.round(width * ratio);
       canvas.height = Math.round(height * ratio);
       canvas.style.width = width + "px";
       canvas.style.height = height + "px";
       ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-      const count = Math.min(compact.matches ? 30 : 75, Math.max(16, Math.round(width * height / (compact.matches ? 11000 : 15000))));
+      const count = Math.min(compact.matches ? 36 : 85, Math.max(24, Math.round(width * height / (compact.matches ? 11000 : 15000))));
       particles = Array.from({ length: count }, () => ({
         x: random(0, width), y: random(0, height),
-        vx: random(-.25, .25), vy: random(-.3, .3),
-        r: random(.8, 2.5), tint: Math.floor(random(0, palette.length)), phase: random(0, Math.PI * 2),
+        vx: random(-1.2, 1.2), vy: random(-1.15, 1.15),
+        r: random(1.5, 3.5), tint: Math.floor(random(0, palette.length)), phase: random(0, Math.PI * 2),
       }));
       draw(0);
     };
@@ -57,11 +61,11 @@ export function ParticleField() {
           if (p.y > height + 10) p.y = -10;
           p.phase += .016 * elapsed;
         }
-        const alpha = .32 + .22 * Math.sin(p.phase);
+        const alpha = .58 + .26 * Math.sin(p.phase);
         ctx.beginPath();
         ctx.fillStyle = `rgba(${palette[p.tint]},${alpha})`;
         ctx.shadowColor = `rgba(${palette[p.tint]},.45)`;
-        ctx.shadowBlur = 9;
+        ctx.shadowBlur = 13;
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -73,7 +77,7 @@ export function ParticleField() {
           const dx = a.x - b.x, dy = a.y - b.y;
           const d2 = dx * dx + dy * dy;
           if (d2 > 120 * 120) continue;
-          ctx.strokeStyle = `rgba(70,124,238,${.12 * (1 - Math.sqrt(d2) / 120)})`;
+          ctx.strokeStyle = `rgba(70,124,238,${.22 * (1 - Math.sqrt(d2) / 120)})`;
           ctx.lineWidth = .7;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
