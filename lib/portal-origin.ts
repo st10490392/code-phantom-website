@@ -24,6 +24,6 @@ export function isSameSiteRequest(input: {
     }
   }
   if (input.origin) return allowed.has(input.origin);
-  // No Origin header (some same-origin requests, non-browser clients).
-  return input.secFetchSite === null || input.secFetchSite === "same-origin" || input.secFetchSite === "none";
+  // Fail closed when both browser provenance headers are absent; reject ambiguous "none".
+  return input.secFetchSite === "same-origin";
 }

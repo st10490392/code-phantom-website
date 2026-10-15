@@ -24,3 +24,11 @@ test("cross-site or sibling-subdomain POSTs are refused", () => {
 test("reads are never blocked", () => {
   assert.equal(isSameSiteRequest({ ...base, method: "GET", origin: "https://evil.example", secFetchSite: "cross-site" }), true);
 });
+
+test("state-changing requests without trustworthy provenance are rejected", () => {
+  for (const secFetchSite of [null, "none", "same-site", "cross-site"]) {
+    assert.equal(isSameSiteRequest({ ...base, method: "POST", origin: null, secFetchSite }), false);
+  }
+  assert.equal(isSameSiteRequest({ ...base, method: "POST", origin: null, secFetchSite: "same-origin" }), true);
+  assert.equal(isSameSiteRequest({ ...base, method: "DELETE", origin: null, secFetchSite: null }), false);
+});
