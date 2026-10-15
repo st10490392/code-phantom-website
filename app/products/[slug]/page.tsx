@@ -124,6 +124,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </ul>
               <p className="mt-6 text-xs font-mono uppercase tracking-[0.25em] text-muted-text">Platforms</p>
               <p className="mt-2 text-sm text-metallic-silver">{product.platforms.join(", ")}</p>
+              {product.licenceRequirements && <p className="mt-4 text-sm text-metallic-silver">{product.licenceRequirements}</p>}
+              <div className="mt-4 flex flex-col gap-3 text-sm text-cyber-blue">
+                {product.downloadUrl && <a href={product.downloadUrl} rel="noopener noreferrer">Official Android download</a>}
+                {product.registrationUrl && <a href={product.registrationUrl}>Registration</a>}
+                {product.documentationUrl && <Link href={product.documentationUrl}>Product documentation</Link>}
+                {product.supportUrl && <Link href={product.supportUrl}>Support</Link>}
+              </div>
             </div>
           </Reveal>
         </div>

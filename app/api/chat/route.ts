@@ -1,49 +1,25 @@
 import { NextResponse } from "next/server";
 import { getChatProvider } from "@/lib/chatbot/provider";
+import { boundedJson, createLimiter } from "@/lib/chatbot/request-guards";
 
 export const runtime = "nodejs";
-
-const MAX_MESSAGE_LENGTH = 500;
+const allow = createLimiter();
+const headers = { "Cache-Control": "no-store" };
 
 export async function POST(request: Request) {
+  if (!allow()) return NextResponse.json({ error: "Please try again shortly." }, { status: 429, headers: { ...headers, "Retry-After": "60" } });
+  const origin = request.headers.get("origin");
+  if (origin && origin !== new URL(request.url).origin) return NextResponse.json({ error: "Invalid origin." }, { status: 403, headers });
   let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json(
-      { error: "Invalid request body." },
-      { status: 400 }
-    );
+  try { body = await boundedJson(request); }
+  catch { return NextResponse.json({ error: "A small JSON request body is required." }, { status: 400, headers }); }
+  if (!body || typeof body !== "object" || Array.isArray(body) || Object.keys(body).some(k => k !== "message")) {
+    return NextResponse.json({ error: "Only a message is accepted." }, { status: 400, headers });
   }
-
-  const message =
-    body && typeof body === "object" && "message" in body
-      ? (body as { message: unknown }).message
-      : undefined;
-
-  if (typeof message !== "string" || message.trim().length === 0) {
-    return NextResponse.json(
-      { error: "A non-empty 'message' string is required." },
-      { status: 400 }
-    );
+  const message = (body as { message?: unknown }).message;
+  if (typeof message !== "string" || !message.trim() || message.length > 500) {
+    return NextResponse.json({ error: "Message must contain 1 to 500 characters." }, { status: 400, headers });
   }
-
-  if (message.length > MAX_MESSAGE_LENGTH) {
-    return NextResponse.json(
-      { error: `Message exceeds ${MAX_MESSAGE_LENGTH} characters.` },
-      { status: 400 }
-    );
-  }
-
-  try {
-    const provider = getChatProvider();
-    const result = await provider.respond(message);
-    return NextResponse.json(result);
-  } catch (error) {
-    console.error("Phantom Assistant chat error:", error);
-    return NextResponse.json(
-      { error: "Phantom Assistant is temporarily unavailable. Please try again." },
-      { status: 500 }
-    );
-  }
+  try { return NextResponse.json(await getChatProvider().respond(message), { headers }); }
+  catch { return NextResponse.json({ error: "Phantom Assistant is temporarily unavailable. Use /contact." }, { status: 500, headers }); }
 }

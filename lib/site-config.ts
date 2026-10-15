@@ -173,7 +173,7 @@ export const entityIds = {
  */
 export const primaryNav = [
   { label: "About", href: "/about" },
-  { label: "Capabilities", href: "/capabilities" },
+  { label: "Services", href: "/services" },
   { label: "Divisions", href: "/divisions" },
   { label: "Products", href: "/products" },
   { label: "Projects", href: "/projects" },

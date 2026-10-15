@@ -1,3 +1,4 @@
+import { currentAnswer, groundedIntent } from "./grounded-content";
 import {
   knowledgeBase,
   fallbackAnswer,
@@ -163,6 +164,9 @@ export function matchQuestion(rawInput: string): MatchResult {
   }
   const question = small ? small.remainder : trimmed;
 
+  const grounded = groundedIntent(question);
+  if (grounded) return grounded;
+
   const queryTokens = significantTokens(question);
   if (queryTokens.length === 0) {
     return { answer: fallbackAnswer, matchedId: null, confidence: 0 };
@@ -180,7 +184,7 @@ export function matchQuestion(rawInput: string): MatchResult {
   }
 
   if (bestEntry && bestScore >= CONFIDENCE_THRESHOLD) {
-    return { answer: bestEntry.answer, matchedId: bestEntry.id, confidence: bestScore };
+    return { answer: currentAnswer(bestEntry.id, bestEntry.answer), matchedId: bestEntry.id, confidence: bestScore };
   }
 
   return { answer: fallbackAnswer, matchedId: null, confidence: bestScore };
