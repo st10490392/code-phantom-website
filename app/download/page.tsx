@@ -28,7 +28,7 @@ export default function DownloadPage() {
             </p>
             <div className="mt-6 space-y-3">
               <Button
-                href="https://github.com/st10490392/code-phantom-client/releases/download/stable/app-debug.apk"
+                href="/downloads/codephantom-client.apk"
                 external
                 className="w-full"
               >
@@ -43,6 +43,16 @@ export default function DownloadPage() {
                 <li>Tap Install (enable Unknown sources if prompted)</li>
                 <li>Open app and sign in</li>
               </ol>
+            </div>
+            <div className="mt-4 rounded-xl border border-metallic-silver/10 bg-surface/40 p-3">
+              <p className="text-xs text-muted-text">
+                <span className="font-semibold text-ghost-white">Version 1.0</span>
+                <span className="mx-2 text-metallic-silver/40">|</span>
+                <span className="font-mono">4.1 MB</span>
+              </p>
+              <p className="mt-1 break-all font-mono text-[10px] text-metallic-silver/60">
+                SHA256 f0e71c7123182c03b7e971185b699e8dbf3ad436abaca663491f3fa41db6f845
+              </p>
             </div>
           </div>
 
