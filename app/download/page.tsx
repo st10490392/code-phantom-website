@@ -28,7 +28,7 @@ export default function DownloadPage() {
             </p>
             <div className="mt-6 space-y-3">
               <Button
-                href="https://github.com/st10490392/code-phantom-client/releases/latest"
+                href="https://github.com/st10490392/code-phantom-client/releases/download/stable/app-debug.apk"
                 external
                 className="w-full"
               >
