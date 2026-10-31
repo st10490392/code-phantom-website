@@ -16,7 +16,7 @@ export type Readiness =
   | "Public beta"
   | "Generally available";
 
-export type ProductSlug = "cpt-scanner" | "codephantom-app" | "codephantom-ea";
+export type ProductSlug = "cpt-scanner" | "codephantom-app" | "codephantom-ea" | "codephantom-client";
 
 export type Product = {
   slug: ProductSlug;
@@ -96,6 +96,29 @@ export const products: Product[] = [
       "The EA is not proven or profitable, and no performance results are published. Any future release would follow testing and a compliance review.",
     ],
     platforms: ["Research environment"],
+  },
+  {
+    slug: "codephantom-client",
+    name: "CodePhantom Client",
+    summary: "Lightweight client app for trading signals and EA management.",
+    readiness: "Public beta",
+    readinessNote: "The client app is in public beta. Download and use at your own risk.",
+    description: [
+      "CodePhantom Client is a lightweight application for accessing trading signals and managing your CodePhantom EA instance.",
+      "Activate your licence key to unlock signals or EA access. Signal keys provide market signals only. EA keys enable EA registration and control.",
+      "The client is account-bound and device-locked. Licence keys cannot be shared or reused across accounts.",
+    ],
+    highlights: [
+      "Simplified interface for signals and EA",
+      "Account-bound licence activation",
+      "Lightweight PWA and Android app",
+      "Direct integration with CodePhantom backend",
+    ],
+    notes: [
+      "This is a public beta. Features may change.",
+      "Android APK available on the download page.",
+    ],
+    platforms: ["Web (PWA)", "Android"],
   },
 ];
 

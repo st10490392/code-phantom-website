@@ -43,8 +43,20 @@ function validWebAppUrl(raw: string | undefined): string | null {
   }
 }
 
+const configuredClientUrl = process.env.NEXT_PUBLIC_CODEPHANTOM_CLIENT_URL?.trim();
+function validClientUrl(raw: string | undefined): string | null {
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+    return url.toString().replace(/\/$/, "");
+  } catch {
+    return null;
+  }
+}
+
 export const webAppUrl =
-  validWebAppUrl(configuredWebAppUrl) ??
+  validClientUrl(configuredClientUrl) ?? validWebAppUrl(configuredWebAppUrl) ??
   "https://code-phantom-web-staging.up.railway.app";
 
 export const siteConfig = {
@@ -180,4 +192,5 @@ export const primaryNav = [
   { label: "Insights", href: "/insights" },
   { label: "Founder", href: "/founder" },
   { label: "Contact", href: "/contact" },
+  { label: "Download", href: "/download" },
 ] as const;
