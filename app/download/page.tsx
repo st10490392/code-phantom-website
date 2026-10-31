@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function DownloadPage() {
   return (
     <Section className="border-t border-metallic-silver/10">
-      <div className="mx-auto max-w-2xl text-center">
+      <div className="mx-auto max-w-3xl text-center">
         <h1 className="font-display text-3xl font-semibold uppercase tracking-tight text-ghost-white sm:text-4xl">
           Download CodePhantom Client
         </h1>
@@ -21,12 +21,12 @@ export default function DownloadPage() {
         </p>
 
         <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/40 p-8">
+          <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/40 p-8 text-left">
             <h2 className="font-display text-xl font-semibold text-ghost-white">Android APK</h2>
             <p className="mt-3 text-sm text-muted-text">
-              Download the lightweight Android app. Sign in with your account and activate your licence key.
+              Direct download. Install and activate with your licence key.
             </p>
-            <div className="mt-6">
+            <div className="mt-6 space-y-3">
               <Button
                 href="https://github.com/st10490392/code-phantom-client/releases/latest"
                 external
@@ -35,15 +35,21 @@ export default function DownloadPage() {
                 Download APK
               </Button>
             </div>
-            <p className="mt-3 text-xs text-muted-text">
-              Requires Android 8.0 or later.
-            </p>
+            <div className="mt-6">
+              <h3 className="font-display text-sm font-semibold text-ghost-white">Installation</h3>
+              <ol className="mt-2 list-decimal list-inside space-y-1 text-sm text-muted-text">
+                <li>Download the APK</li>
+                <li>Open on your Android device</li>
+                <li>Tap Install (enable Unknown sources if prompted)</li>
+                <li>Open app and sign in</li>
+              </ol>
+            </div>
           </div>
 
-          <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/40 p-8">
+          <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/40 p-8 text-left">
             <h2 className="font-display text-xl font-semibold text-ghost-white">Web / PWA</h2>
             <p className="mt-3 text-sm text-muted-text">
-              Use the client directly in your browser. Install it as a PWA for a native app experience.
+              Use in browser or install as PWA. Works on iOS and Android.
             </p>
             <div className="mt-6">
               <Button
@@ -53,33 +59,44 @@ export default function DownloadPage() {
                 Open Web Client
               </Button>
             </div>
-            <p className="mt-3 text-xs text-muted-text">
-              No installation required.
-            </p>
+            <div className="mt-6">
+              <h3 className="font-display text-sm font-semibold text-ghost-white">Installation</h3>
+              <ol className="mt-2 list-decimal list-inside space-y-1 text-sm text-muted-text">
+                <li>Open the Web Client link above</li>
+                <li>Sign in with your account</li>
+                <li>Add to Home Screen (browser menu)</li>
+                <li>Launch from home screen like a native app</li>
+              </ol>
+            </div>
           </div>
         </div>
 
         <div className="mt-12 rounded-2xl border border-metallic-silver/10 bg-midnight-navy/40 p-8 text-left">
-          <h3 className="font-display text-lg font-semibold text-ghost-white">How to Install</h3>
-          <div className="mt-4 space-y-4 text-sm text-muted-text">
+          <h3 className="font-display text-lg font-semibold text-ghost-white">Voice Control</h3>
+          <p className="mt-3 text-sm text-muted-text">
+            Talk to ASTRO like Siri. Choose your platform:
+          </p>
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <h4 className="font-semibold text-ghost-white">Android APK</h4>
-              <ol className="mt-2 list-decimal list-inside space-y-1">
-                <li>Download the APK from GitHub Releases</li>
-                <li>Open the file on your Android device</li>
-                <li>Tap &ldquo;Install&rdquo; (enable &ldquo;Unknown sources&rdquo; if prompted)</li>
-                <li>Open the app and sign in</li>
-              </ol>
+              <h4 className="font-semibold text-ghost-white text-sm">Telegram Voice</h4>
+              <p className="mt-1 text-sm text-muted-text">
+                Open Telegram → Find your bot → Hold mic button → Speak → Get voice reply
+              </p>
             </div>
             <div>
-              <h4 className="font-semibold text-ghost-white">Web / PWA</h4>
-              <ol className="mt-2 list-decimal list-inside space-y-1">
-                <li>Open the Web Client link above</li>
-                <li>Sign in with your account</li>
-                <li>Tap your browser menu → &ldquo;Add to Home screen&rdquo;</li>
-                <li>Launch from your home screen like a native app</li>
-              </ol>
+              <h4 className="font-semibold text-ghost-white text-sm">PWA Voice (Beta)</h4>
+              <p className="mt-1 text-sm text-muted-text">
+                Open Web Client → Tap microphone button → Speak → Hear reply
+              </p>
             </div>
+          </div>
+          <div className="mt-4 rounded-xl border border-metallic-silver/10 bg-surface/40 p-4">
+            <h4 className="font-semibold text-ghost-white text-sm">Quick Shortcuts</h4>
+            <ul className="mt-2 space-y-1 text-sm text-muted-text list-disc list-inside">
+              <li><strong>iOS:</strong> Say Hey Siri, open Telegram to launch your bot</li>
+              <li><strong>Android:</strong> Add PWA to home screen for one-tap access</li>
+              <li><strong>Both:</strong> Use browser widgets for quick access</li>
+            </ul>
           </div>
         </div>
 
