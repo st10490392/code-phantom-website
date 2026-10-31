@@ -60,6 +60,30 @@ export default function DownloadPage() {
         </div>
 
         <div className="mt-12 rounded-2xl border border-metallic-silver/10 bg-midnight-navy/40 p-8 text-left">
+          <h3 className="font-display text-lg font-semibold text-ghost-white">How to Install</h3>
+          <div className="mt-4 space-y-4 text-sm text-muted-text">
+            <div>
+              <h4 className="font-semibold text-ghost-white">Android APK</h4>
+              <ol className="mt-2 list-decimal list-inside space-y-1">
+                <li>Download the APK from GitHub Releases</li>
+                <li>Open the file on your Android device</li>
+                <li>Tap &ldquo;Install&rdquo; (enable &ldquo;Unknown sources&rdquo; if prompted)</li>
+                <li>Open the app and sign in</li>
+              </ol>
+            </div>
+            <div>
+              <h4 className="font-semibold text-ghost-white">Web / PWA</h4>
+              <ol className="mt-2 list-decimal list-inside space-y-1">
+                <li>Open the Web Client link above</li>
+                <li>Sign in with your account</li>
+                <li>Tap your browser menu → &ldquo;Add to Home screen&rdquo;</li>
+                <li>Launch from your home screen like a native app</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 rounded-2xl border border-metallic-silver/10 bg-midnight-navy/40 p-8 text-left">
           <h3 className="font-display text-lg font-semibold text-ghost-white">Licence Keys</h3>
           <p className="mt-3 text-sm text-muted-text">
             Licence keys are account-bound and device-locked. They cannot be reused or shared across accounts.
