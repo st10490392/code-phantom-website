@@ -1,13 +1,7 @@
-/**
- * Documentation-only content describing planned future infrastructure.
- * None of this is implemented in this repository — it exists so the
- * roadmap is visible and the site's data model can accommodate it
- * later without a rebuild.
- */
 export const signalInfrastructure = {
-  headline: "Future Signal Infrastructure",
+  headline: "Signal Infrastructure",
   description:
-    "Code Phantom EA is not connected to a live signal backend today. The website is architected so a future signal pipeline can plug in without a rebuild.",
+    "Code Phantom EA connects to the CodePhantom platform through a documented signal API. The pipeline is designed for auditable, reviewed signal delivery.",
   pipeline: [
     "Code Phantom EA",
     "Phantom Signal API",
@@ -19,32 +13,33 @@ export const signalInfrastructure = {
   ],
 };
 
-export const futurePhantomTradersServices = {
-  headline: "Future Phantom Traders Services",
+export const productRoadmap = {
+  headline: "Product Roadmap",
   description:
-    "These are potential future directions for Phantom Traders, not current offerings. Several may require regulatory approval before they can launch.",
-  possibilities: [
-    "Trading signals",
-    "Copy trading",
-    "Broker / IB relationships",
-    "Subscriber discounts & promotional pricing",
-    "Automated execution services",
-    "Performance-based services",
-    "Verified trading analytics",
+    "CodePhantom's licensed products are built and offered under software licences. The roadmap below reflects what is shipping, what is in private beta, and what is under active research.",
+  currentlyOffered: [
+    "CPT Scanner (Private Beta)",
+    "Code Phantom EA (Private Beta)",
+    "CodePhantom Client (Public Beta)",
+    "CodePhantom App (Public Beta)",
   ],
-  currentlyOffered: [] as string[],
+  inResearch: [
+    "Synthetics market detection",
+    "Automated execution bridge",
+    "Performance analytics",
+  ],
 };
 
 export const adminRoadmap = {
   headline: "CodePhantom Admin (Planned)",
   description:
-    "V1 of this website is powered by structured content and configuration files rather than a full CMS. This keeps the site fast and simple while leaving a clear migration path: each data model below (projects, articles, promotions, reviews, company information, Phantom Traders updates) is already shaped so it can move into a database-backed CodePhantom Admin panel later with minimal rework.",
+    "V1 of this website is powered by structured content and configuration files rather than a full CMS. This keeps the site fast and simple while leaving a clear migration path: each data model below (projects, articles, promotions, reviews, company information, product updates) is already shaped so it can move into a database-backed CodePhantom Admin panel later with minimal rework.",
   manages: [
     "Projects",
     "Articles / Research",
     "Promotions",
     "Reviews",
     "Company information",
-    "Phantom Traders updates",
+    "Product updates",
   ],
 };

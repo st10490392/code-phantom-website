@@ -8,7 +8,7 @@ import { NetworkBackground } from "@/components/network-background";
 export const metadata: Metadata = {
   title: "Divisions",
   description:
-    "CodePhantom Software, CodePhantom Security, CodePhantom Labs and Phantom Traders — the four engineering divisions of CodePhantom Technologies.",
+    "CodePhantom Software, CodePhantom Security and CodePhantom Labs — the three engineering divisions of CodePhantom Technologies.",
 };
 
 export default function DivisionsPage() {
@@ -22,7 +22,7 @@ export default function DivisionsPage() {
               Divisions
             </p>
             <h1 className="font-display text-4xl font-semibold text-ghost-white tracking-tight md:text-5xl max-w-3xl">
-              One company, four engineering fronts.
+              One company, three engineering fronts.
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-text md:text-lg">
               Each division carries its own focus, but shares the same
@@ -34,7 +34,7 @@ export default function DivisionsPage() {
       </section>
 
       <Section className="border-t border-metallic-silver/10">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {divisions.map((d, i) => (
             <Reveal key={d.slug} delay={i * 80}>
               <DivisionCard division={d} />

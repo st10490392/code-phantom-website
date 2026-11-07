@@ -30,44 +30,29 @@ export const divisions: Division[] = [
     name: "CodePhantom Security",
     tagline: "Security engineered in, not bolted on.",
     description:
-      "CodePhantom Security focuses on security-oriented development, independent cybersecurity research, and experimental security tooling — built around secure software principles and hands-on Linux/security work.",
+      "CodePhantom Security builds network security tooling, hardening frameworks, and audit instrumentation — practical security engineering for teams that ship.",
     focus: [
-      "Security-oriented development",
-      "Cybersecurity research",
-      "Secure software principles",
-      "Experimental security projects",
+      "Network security tools",
+      "System hardening frameworks",
+      "Security audit instrumentation",
+      "Secure development pipelines",
     ],
-    status: "Active — Research Stage",
+    status: "Active",
   },
   {
     number: "03",
     slug: "labs",
     name: "CodePhantom Labs",
-    tagline: "Where experimental systems are built.",
+    tagline: "Where experimental systems become products.",
     description:
-      "CodePhantom Labs is the R&D division — the space for intelligent automation, AI experimentation, software agents, developer tooling and emerging technology that hasn't found a permanent home yet.",
+      "CodePhantom Labs is the R&D division — intelligent automation, AI agents, developer tooling, and emerging technology. What proves useful graduates to Software or Security; the rest stays here.",
     focus: [
       "Intelligent automation",
       "AI & software agent experimentation",
       "Developer tooling",
       "Emerging technology R&D",
     ],
-    status: "Active — R&D",
-  },
-  {
-    number: "04",
-    slug: "phantom-traders",
-    name: "Phantom Traders",
-    tagline: "Systematic markets. Engineered execution.",
-    description:
-      "Phantom Traders is CodePhantom's quantitative and trading-technology division — the continuation of the company's original trading ambitions, now engineered as systematic research and automated trading technology.",
-    focus: [
-      "Strategy development",
-      "Automated trading systems",
-      "Research & backtesting",
-      "Risk management & quantitative tooling",
-    ],
-    status: "Active — Research & Development",
+    status: "Active",
   },
 ];
 

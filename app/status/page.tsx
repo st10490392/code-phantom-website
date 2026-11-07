@@ -31,8 +31,8 @@ export default async function StatusPage() {
       state: release ? `Released (${release.channel})` : "No public release",
       detail: release ? `Version ${release.version}.` : "In development.",
     },
-    { name: "CPT Scanner", state: "Private development", detail: "Not publicly available." },
-    { name: "Code Phantom EA", state: "Research / Development", detail: "Not offered to clients." },
+    { name: "CPT Scanner", state: "Available", detail: "Licensed software, tiers from Free." },
+    { name: "Code Phantom EA", state: "Available", detail: "Licensed software, Professional and Enterprise tiers." },
   ];
 
   return (

@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Capability } from "@/lib/capabilities";
 import type { Division } from "@/lib/divisions";
 import type { Project } from "@/lib/projects";
+import type { Product } from "@/lib/products";
 import { CodeIcon, ShieldIcon, AutomationIcon, ChartIcon, ArrowRightIcon } from "@/components/icons";
 import { Badge } from "@/components/ui/section";
 
@@ -86,5 +87,56 @@ export function ProjectCard({ project }: { project: Project }) {
         <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
       </div>
     </Link>
+  );
+}
+
+const readinessColors: Record<string, string> = {
+  "Research / Development": "text-muted-text",
+  "Private development": "text-cyber-blue",
+  "Private beta": "text-phantom-purple",
+  "Public beta": "text-ghost-white/70",
+  "Generally available": "text-cyber-blue",
+};
+
+export function ProductCard({ product }: { product: Product }) {
+  return (
+    <div className="card-hover group flex flex-col rounded-2xl border border-metallic-silver/10 bg-surface/40 p-8 h-full">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-xs font-mono tracking-[0.2em] text-cyber-blue uppercase">
+          {product.readiness}
+        </span>
+        <span
+          className={`text-xs font-mono ${readinessColors[product.readiness] || "text-muted-text"}`}
+        >
+          {product.readinessNote}
+        </span>
+      </div>
+      <h3 className="mt-5 font-display text-xl font-semibold text-ghost-white">
+        {product.name}
+      </h3>
+      <p className="mt-3 text-sm leading-relaxed text-muted-text flex-1">
+        {product.summary}
+      </p>
+      <div className="mt-6 flex flex-wrap gap-2">
+        {product.platforms.map((p) => (
+          <span
+            key={p}
+            className="rounded-full border border-metallic-silver/15 px-2.5 py-1 text-[0.65rem] font-mono text-muted-text"
+          >
+            {p}
+          </span>
+        ))}
+      </div>
+      <div className="mt-6 flex flex-wrap gap-2">
+        {product.licenceTiers.map((t) => (
+          <span
+            key={t}
+            className="rounded-full border border-phantom-purple/20 px-2.5 py-1 text-[0.65rem] font-mono text-ghost-white/70"
+          >
+            {t}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }

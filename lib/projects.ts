@@ -6,9 +6,8 @@
  * This shape is intended to migrate cleanly into a future CMS/database.
  */
 export type ProjectStatus =
-  | "Research / Development"
-  | "In Development"
   | "Active"
+  | "In Development"
   | "Prototype"
   | "Academic Project"
   | "Archived";
@@ -34,54 +33,55 @@ export type Project = {
   demoUrl?: string;
   image?: string;
   featured: boolean;
-  date: string; // ISO
-  research?: string;
-};
+    date: string; // ISO
+    licence?: string;
+    /** Optional research note shown on the project detail page. */
+    research?: string;
+  };
 
 export const projects: Project[] = [
   {
     title: "CPT Scanner",
     slug: "cpt-scanner",
     summary:
-      "A market-scanning and trade-planning system under active research and backtesting within Phantom Traders.",
+      "A market-scanning and trade-planning system sold as licensed software under the CodePhantom Software division.",
     description:
-      "CPT Scanner turns defined market-analysis rules into a lightweight scanner that identifies potential setups for human review. Current work focuses on Forex and indices validation, data parity and backtesting. Synthetic-market support and automated execution are separate future capabilities that remain unavailable until they are independently validated.",
+      "CPT Scanner turns defined market-analysis rules into a lightweight scanner that identifies potential setups for human review. It is licensed as a software product with tiered access — Free, Lite, Professional and Enterprise — rather than sold as a managed service or investment product.",
     technologies: ["Python", "MT5 Data Pipeline", "Backtesting", "Market Structure"],
     category: "Quantitative Technology",
     scope: "CodePhantom",
-    status: "Research / Development",
+    status: "Active",
+    licence: "Free / Lite / Professional / Enterprise",
     featured: true,
     date: "2026-01-01",
-    research:
-      "CPT Scanner remains a research and validation project. No production performance, win rate or return figure is claimed, and future execution capability is intentionally separate from the current scanner workflow.",
   },
   {
     title: "Code Phantom EA",
     slug: "code-phantom-ea",
     summary:
-      "An automated trading system under active research and development within Phantom Traders.",
+      "An automated trading engine sold as licensed software under the CodePhantom Software division.",
     description:
-      "Code Phantom EA is CodePhantom's automated trading engine research project — an expert advisor engineered to translate systematic trading logic into disciplined, rules-based execution. It marks the transition from Antagonistic Trading Co.'s manual, market-research-driven strategy work into formal software rules, testing and automation, and is being developed as part of Phantom Traders' broader research into strategy development, backtesting and automated execution technology.",
+      "Code Phantom EA is CodePhantom's automated trading engine — an expert advisor engineered to translate systematic trading logic into disciplined, rules-based execution. It is licensed as a software product, not a managed account or investment service.",
     technologies: ["MQL5", "Python", "Backtesting Infrastructure"],
     category: "Quantitative Technology",
     scope: "CodePhantom",
-    status: "Research / Development",
+    status: "In Development",
+    licence: "Professional / Enterprise",
     featured: true,
     date: "2026-01-01",
-    research:
-      "Code Phantom EA is in active research and development. No performance results, win rates or return figures are published until a complete, verified track record exists. No exact project start date is claimed beyond its place in CodePhantom's broader company timeline.",
   },
   {
     title: "CodePhantom App",
     slug: "codephantom-app",
     summary:
-      "The Flutter mobile client for CodePhantom accounts, Scanner review, signals, licences and future EA monitoring.",
+      "The Flutter mobile client for CodePhantom accounts, Scanner review, licences and future EA monitoring.",
     description:
-      "CodePhantom App is the mobile client being built for the CodePhantom platform. Its architecture covers account access, Scanner setup review, signals, licences, device-bound access and future EA monitoring. The Android application is still in development and no public APK release is currently offered.",
+      "CodePhantom App is the mobile client for the CodePhantom platform. Its architecture covers account access, Scanner setup review, licences and device-bound access.",
     technologies: ["Flutter", "Dart", "Riverpod", "Supabase"],
     category: "Software Engineering",
     scope: "CodePhantom",
     status: "In Development",
+    licence: "Free / Lite / Professional / Enterprise",
     featured: true,
     date: "2026-01-01",
   },

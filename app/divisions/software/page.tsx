@@ -16,30 +16,26 @@ export const metadata: Metadata = {
   description: division.description,
 };
 
-const services = [
+const focusAreas = [
   {
-    title: "Custom Software",
-    detail: "Purpose-built applications designed around a specific problem rather than a generic template.",
+    title: "Licensed Software Products",
+    detail:
+      "CodePhantom Software builds and licenses software — CPT Scanner, Code Phantom EA and the CodePhantom App — sold under four tiers, not as managed services.",
   },
   {
-    title: "Backend Development",
-    detail: "Reliable server-side systems, data models and business logic engineered for correctness.",
+    title: "Quantitative Systems",
+    detail:
+      "Market-scanning and automated trading engines designed around fixed, documented rules with human review at the boundary between automated detection and human action.",
   },
   {
-    title: "Web Applications",
-    detail: "Fast, accessible, maintainable web products — including this website.",
+    title: "Mobile Platforms",
+    detail:
+      "Native Android clients for account access, Scanner review and licence management, distributed with verified builds.",
   },
   {
-    title: "APIs & Integrations",
-    detail: "Clean, well-documented interfaces that let systems talk to each other reliably.",
-  },
-  {
-    title: "Automation & Internal Tools",
-    detail: "Tooling that removes repetitive manual work from engineering and operational workflows.",
-  },
-  {
-    title: "Systems Development",
-    detail: "End-to-end system design — from architecture decisions to production deployment.",
+    title: "Web & Infrastructure",
+    detail:
+      "Production web applications and internal tooling — including this website — engineered for maintainability and correctness.",
   },
 ];
 
@@ -55,10 +51,10 @@ export default function SoftwarePage() {
 
       <Section className="border-t border-metallic-silver/10">
         <Reveal>
-          <SectionHeading eyebrow="What we build" title="Engineering, end to end." />
+          <SectionHeading eyebrow="What we build" title="Software products. Licensed, not sold." />
         </Reveal>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s, i) => (
+          {focusAreas.map((s, i) => (
             <Reveal key={s.title} delay={i * 60}>
               <div className="rounded-xl border border-metallic-silver/10 bg-surface/40 p-6 h-full card-hover">
                 <h3 className="font-display text-lg font-semibold text-ghost-white">
@@ -76,10 +72,7 @@ export default function SoftwarePage() {
       <Section className="border-t border-metallic-silver/10 bg-midnight-navy/40">
         <Reveal>
           <p className="mx-auto max-w-2xl text-center text-sm leading-relaxed text-muted-text">
-            CodePhantom Software is early stage. Projects below reflect
-            genuine, ongoing engineering work rather than a client
-            portfolio — CodePhantom does not yet have a public client
-            history.
+            CodePhantom Software is an early-stage engineering company. Projects below reflect genuine, ongoing engineering work rather than a client portfolio — and the products listed on the Products page are licensed software, not financial services.
           </p>
         </Reveal>
       </Section>
