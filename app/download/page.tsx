@@ -29,7 +29,6 @@ export default function DownloadPage() {
             <div className="mt-6 space-y-3">
               <Button
                 href="/app"
-                external
                 className="w-full"
               >
                 Open CodePhantom App
@@ -40,7 +39,6 @@ export default function DownloadPage() {
                 Android APK distribution will be enabled after the signed release is built,
                 verified and uploaded. No unverified installer is offered here.
               </p>
-            </div>
             </div>
           </div>
 
