@@ -24,34 +24,20 @@ export default function DownloadPage() {
           <div className="rounded-2xl border border-metallic-silver/10 bg-midnight-navy/40 p-8 text-left">
             <h2 className="font-display text-xl font-semibold text-ghost-white">Android APK</h2>
             <p className="mt-3 text-sm text-muted-text">
-              Direct download. Install and activate with your licence key.
+              The signed Android release is being prepared. Use the browser app in the meantime.
             </p>
             <div className="mt-6 space-y-3">
               <Button
-                href="/downloads/codephantom-client.apk"
-                external
+                href="/app"
                 className="w-full"
               >
-                Download APK
+                Open CodePhantom App
               </Button>
             </div>
-            <div className="mt-6">
-              <h3 className="font-display text-sm font-semibold text-ghost-white">Installation</h3>
-              <ol className="mt-2 list-decimal list-inside space-y-1 text-sm text-muted-text">
-                <li>Download the APK</li>
-                <li>Open on your Android device</li>
-                <li>Tap Install (enable Unknown sources if prompted)</li>
-                <li>Open app and sign in</li>
-              </ol>
-            </div>
-            <div className="mt-4 rounded-xl border border-metallic-silver/10 bg-surface/40 p-3">
-              <p className="text-xs text-muted-text">
-                <span className="font-semibold text-ghost-white">Version 1.0</span>
-                <span className="mx-2 text-metallic-silver/40">|</span>
-                <span className="font-mono">4.1 MB</span>
-              </p>
-              <p className="mt-1 break-all font-mono text-[10px] text-metallic-silver/60">
-                SHA256 f0e71c7123182c03b7e971185b699e8dbf3ad436abaca663491f3fa41db6f845
+            <div className="mt-6 rounded-xl border border-metallic-silver/10 bg-surface/40 p-4">
+              <p className="text-sm text-muted-text">
+                Android APK distribution will be enabled after the signed release is built,
+                verified and uploaded. No unverified installer is offered here.
               </p>
             </div>
           </div>
@@ -63,7 +49,7 @@ export default function DownloadPage() {
             </p>
             <div className="mt-6">
               <Button
-                href="/"
+                href="/app"
                 className="w-full"
               >
                 Open Web Client
