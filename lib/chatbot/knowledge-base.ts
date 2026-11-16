@@ -329,7 +329,6 @@ export const knowledgeBase: KnowledgeEntry[] = [
       "CodePhantom Traders is CodePhantom's WhatsApp group (formerly TAT Market Direction) for market discussion, setups and CodePhantom updates. The invite link is on the Contact and Support pages when available. Group discussion is general information — never post account details or keys there.",
   },
   {
-  {
     id: "private-beta",
     questions: ["can i join the beta", "private beta", "public beta", "beta sign up", "join beta"],
     keywords: ["beta", "private", "testing", "sign up"],
