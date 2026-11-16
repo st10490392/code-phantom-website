@@ -202,28 +202,28 @@ export const knowledgeBase: KnowledgeEntry[] = [
     questions: ["how much does it cost", "what is the price", "pricing", "how much is the scanner", "is it free"],
     keywords: ["price", "pricing", "cost", "much", "fee", "rand", "zar", "usd"],
     answer:
-      "CodePhantom offers four licence tiers: Free (research materials and resources), Lite ($15/month — 5 market directions/day, 20/week), Professional ($99/month — 20+ market directions/day), and Enterprise ($499/month — everything the system detects). Exact pricing and features are on the Licensing page.",
+      "Licence tiers, current prices and included features are listed on the Licensing page. Check that page for the latest plans and billing terms before making a purchase.",
   },
   {
     id: "availability",
     questions: ["can i buy", "how do i sign up", "when will it launch", "is it available", "how do i get access", "release date"],
     keywords: ["buy", "purchase", "available", "launch", "access", "signup", "register", "release", "when"],
     answer:
-      "Licences are available now. Create an account on the Sign In page, choose your tier on the Licensing page, and you will receive a unique activation key. The core licence is applied to your account immediately — no waiting for a launch date.",
+      "Check the Sign In and Licensing pages for current account and licence availability. A staging app or test environment does not mean public production access is open.",
   },
   {
     id: "android-app",
     questions: ["is there an app", "codephantom app", "android app", "mobile app", "what does the app do"],
     keywords: ["app", "android", "mobile", "application"],
     answer:
-      "The CodePhantom App is the mobile client for CodePhantom accounts. Account holders use it to review Scanner setups, manage their licence and devices, and receive notifications. It is distributed as an Android APK from the official Download page with SHA-256 verification.",
+      "The CodePhantom App is being prepared for public release. A browser client is deployed in the staging environment for controlled testing; staging is not the public production service. Public release details will be posted on the official CodePhantom pages once the release is verified.",
   },
   {
     id: "apk-download",
     questions: ["where can i download the app", "apk download", "how do i install the app", "download link"],
     keywords: ["download", "apk", "install", "play", "store"],
     answer:
-      "The Android APK is linked on the Download page with its SHA-256 checksum so you can verify the file. Only install CodePhantom builds linked from the official Download page — never an APK sent over WhatsApp or from another site.",
+      "The signed Android APK is not available yet. The Download page will offer an installer only after the release has been built, signed, verified and uploaded. Do not install APK files sent through WhatsApp or from unofficial sources.",
   },
   {
     id: "ios",
@@ -323,10 +323,18 @@ export const knowledgeBase: KnowledgeEntry[] = [
   },
   {
     id: "codephantom-traders",
-    questions: ["whatsapp group", "codephantom traders", "is there a community", "tat market direction", "join the group"],
+    questions: ["whatsapp group", "codephantom traders", "is there a community", "tat market direction", "how do i find the group"],
     keywords: ["whatsapp", "group", "community", "traders", "tat", "chat"],
     answer:
       "CodePhantom Traders is CodePhantom's WhatsApp group (formerly TAT Market Direction) for market discussion, setups and CodePhantom updates. The invite link is on the Contact and Support pages when available. Group discussion is general information — never post account details or keys there.",
+  },
+  {
+  {
+    id: "private-beta",
+    questions: ["can i join the beta", "private beta", "public beta", "beta sign up", "join beta"],
+    keywords: ["beta", "private", "testing", "sign up"],
+    answer:
+      "There is no public beta sign-up at this time. Check the official CodePhantom Contact page for release updates and any future testing opportunities.",
   },
   {
     id: "support",
